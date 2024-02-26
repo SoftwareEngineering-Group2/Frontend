@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const SignUp = () => {
     const router = useRouter();
@@ -37,6 +38,9 @@ const SignUp = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart House</Text>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()} >
+      <Icon name="arrow-back" size={24} color="white" /> {/* Adjust icon name, size, and color */}
+      </TouchableOpacity>
       <View style={styles.form}>
         <TextInput
           style={styles.input}
@@ -102,6 +106,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 32,
     alignSelf: 'center',
+  },
+  backButton: {
+    backgroundColor: '#4CAF50',
+     flex: 1,
+    position: 'absolute',
+    top: 20, // Adjust this value to position the button vertically
+    left: 20, // Adjust this value to position the button horizontally
   },
   buttonText: {
     color: '#fff',

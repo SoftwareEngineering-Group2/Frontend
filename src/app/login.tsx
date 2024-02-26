@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 export default function login() {
@@ -13,6 +14,9 @@ export default function login() {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()} >
+      <Icon name="arrow-back" size={24} color="white" /> {/* Adjust icon name, size, and color */}
+      </TouchableOpacity>
       <Text style={styles.title}>Welcome back</Text>
       <TextInput
         style={styles.input}
@@ -60,6 +64,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 5,
     marginBottom: 10,
+  },
+  backButton: {
+    backgroundColor: '#4CAF50',
+    flex: 1,
+    position: 'absolute',
+    top: 20, // Adjust this value to position the button vertically
+    left: 20, // Adjust this value to position the button horizontally
   },
   buttonText: {
     color: 'white',
