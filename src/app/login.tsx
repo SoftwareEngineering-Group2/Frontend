@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
+
 
 export default function login() {
-  
+
+  const router = useRouter();
+
+  const handleCreateAccount = () => {
+    router.push('/signup');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome back</Text>
@@ -19,7 +27,7 @@ export default function login() {
       <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>Log in</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.signUpButton}>
+      <TouchableOpacity style={styles.signUpButton} onPress={handleCreateAccount}>
         <Text style={styles.signUpButtonText}>New user? Sign Up</Text>
       </TouchableOpacity>
     </View>
