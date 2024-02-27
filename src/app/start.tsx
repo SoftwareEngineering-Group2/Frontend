@@ -1,70 +1,114 @@
 import React from 'react';
-import { StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, Image, View, Pressable, Text, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function start() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleLoginPress = () => {
-        router.push('/login');
-      };
+  const handleLoginPress = () => {
+    router.push('/login');
+  };
 
-      const handleCreateAccount = () => {
-        router.push('/signup');
-      };
+  const handleCreateAccount = () => {
+    router.push('/signup');
+  };
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/images/start.png')} style={styles.backgroundImage} />
-      <View style={styles.contentContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleLoginPress}>Log In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleCreateAccount}>Create Account</Text>
-        </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        <Image source={require('../../assets/images/start.png')} style={styles.backgroundImage} resizeMode="cover" />
+        <View style={styles.overlay}>
+          <Text style={styles.overlayTextMain}>Welcome to your smart home</Text>
+          <Text style={styles.overlayTextSub}>A single app for all your smart devices</Text>
+        </View>
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.description}>
+          Control everything in your home connect. Lights, X ,X, security and more.
+        </Text>
+        <Pressable style={styles.button} onPress={handleLoginPress}>
+          <Text style={styles.buttonText}>Log In</Text>
+        </Pressable>
+        <Pressable style={styles.button} onPress={handleCreateAccount}>
+          <Text style={styles.buttonText}>Create Account</Text>
+        </Pressable>
       </View>
     </View>
   );
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF', // Change background color to white
   },
-  backgroundImage: {
-    width: 390,
-    height: 480,
-    resizeMode: 'cover',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexShrink: 0,
-  },
-  contentContainer: {
+  imageContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: windowWidth > 768 ? 20 : 0, // Add horizontal padding only for larger screens
   },
-  logo: {
-    width: 200,
-    height: 100,
-    resizeMode: 'contain',
-    marginBottom: 32,
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 40, // Add more bottom margin for spacing
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    marginBottom: 40, // Add spacing between picture and text
+  },
+  overlayTextMain: {
+    fontSize: windowWidth > 768 ? 48 : 36, // Adjust font size based on screen width
+    fontWeight: 'bold',
+    color: '#fff', // Change text color to white
+    marginBottom: 20, // Add more bottom margin for spacing
+    textAlign: 'center',
+  },
+  overlayTextSub: {
+    fontSize: windowWidth > 768 ? 30 : 24, // Adjust font size based on screen width
+    color: '#fff', // Change text color to a lighter shade of blue or a color that complements your image
+    marginBottom: 20, // Add more bottom margin for spacing
+    textAlign: 'center',
+  },
+  textContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 40, // Increase bottom padding for more spacing
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 40, // Add margin to separate text from the image
+  },
+  description: {
+    marginBottom: 40, // Increase bottom margin for more spacing
+    fontSize: windowWidth > 768 ? 24 : 18, // Adjust font size based on screen width
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#4CAFEB', // Change button color
     borderRadius: 4,
-    paddingVertical: 12,
+    paddingVertical: 16, // Increase vertical padding for more spacing
     paddingHorizontal: 24,
-    marginBottom: 12,
+    marginBottom: 24, // Increase bottom margin for more spacing
+    width: windowWidth > 768 ? '50%' : '80%', // Adjust button width based on screen width
+    maxWidth: 200, // Set maximum width for the button
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontSize: 16,
     fontWeight: 'bold',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
 });
+
+
+
+
+
+
+
