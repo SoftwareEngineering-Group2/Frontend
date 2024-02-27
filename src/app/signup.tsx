@@ -8,28 +8,34 @@ import {
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUp = () => {
-    const router = useRouter();
-  const [username, setUsername] = useState('');
+  const router = useRouter();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const auth = FIREBASE_AUTH; 
 
-  const handleUsernameChange = (value: React.SetStateAction<string>) => {
-    setUsername(value);
-  };
-
-  const handlePasswordChange = (value: React.SetStateAction<string>) => {
-    setPassword(value);
-  };
-
-  const handleEmailChange = (value: React.SetStateAction<string>) => {
-    setEmail(value);
-  };
-
-  const handleCreateAccount = () => {
-    // Implement the create account logic here
-  };
+  const singUp = async () =>{
+    setLoading(true);
+    if(password === confirmPassword){
+      try{
+        const response = await createUserWithEmailAndPassword(auth, email, password);
+        console.log(response)
+        alert("Check your emails")
+      }catch (error: any){
+        console.log(error);
+        alert('Sign in failed: ' + error.message);
+      }finally{
+        setLoading(false)
+      }
+    }else{
+      alert("Passwords does not match!")
+    }
+  }
 
   const handleLoginPress = () => {
     router.push('/login');
@@ -38,38 +44,39 @@ const SignUp = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart House</Text>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()} >
-      <Icon name="arrow-back" size={24} color="white" /> {/* Adjust icon name, size, and color */}
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push("/start")} >
+        <Icon name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.form}>
-        <TextInput
+      <TextInput
           style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={handleUsernameChange}
+          placeholder="Email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
           value={password}
-          onChangeText={handlePasswordChange}
-        />
+          onChangeText={(text) => setPassword(text)}
+        /> 
         <TextInput
           style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={handleEmailChange}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+          placeholder="Confiem Password"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={(text) => setConfirmPassword(text)}
+        />      
+        <TouchableOpacity style={styles.button} onPress={singUp}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleLoginPress}>
         <Text style={styles.link}>Already have an account? Log in</Text>
       </TouchableOpacity>
-    </View>
+    </View> 
   );
 };
 

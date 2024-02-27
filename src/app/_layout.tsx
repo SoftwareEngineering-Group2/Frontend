@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+/* import { Stack } from "expo-router";
 
 const StackLayout = () => {
   return (
@@ -6,4 +6,4 @@ const StackLayout = () => {
     <Stack.Screen name="start" />
     </Stack>
   )
-}
+} */
