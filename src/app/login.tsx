@@ -1,10 +1,28 @@
-import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const auth = FIREBASE_AUTH; 
+
+  const signIn = async () =>{
+    setLoading(true);
+    try{
+      const response = await signInWithEmailAndPassword(auth, email, password)
+      console.log(response)
+    }catch (error: any){
+      console.log(error);
+      alert('Sign in failed: ' + error.message);
+    }finally{
+      setLoading(false)
+    }
+  }
 
   const router = useRouter();
 
@@ -14,27 +32,38 @@ export default function login() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()} >
-      <Icon name="arrow-back" size={24} color="white" /> {/* Adjust icon name, size, and color */}
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push("/start")}>
+        <Icon name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <Text style={styles.title}>Welcome back</Text>
       <TextInput
+        value={email}
         style={styles.input}
-        placeholder="Username"
-
+        placeholder="Email"
+        autoCapitalize='none'
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
+        value={password}
         style={styles.input}
         placeholder="Password"
-        secureTextEntry
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
       />
-      <TouchableOpacity style={styles.button} >
-        <Text style={styles.buttonText}>Log in</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.signUpButton} onPress={handleCreateAccount}>
-        <Text style={styles.signUpButtonText}>New user? Sign Up</Text>
-      </TouchableOpacity>
-    </View>
+
+      { loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+      <>
+        <TouchableOpacity style={styles.button} onPress={signIn}>
+          <Text style={styles.buttonText}>Log in</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleCreateAccount}>
+          <Text style={styles.signUpButtonText}>New user? Sign Up</Text>
+        </TouchableOpacity>
+      </>
+      )}  
+    </View> 
   );
 }
 
