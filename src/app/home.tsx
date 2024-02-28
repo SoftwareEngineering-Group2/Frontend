@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
+import { NativeSyntheticEvent } from 'react-native';
+import { NativeScrollEvent } from 'react-native';
 
 // Mock data (to be replaced with API data)
 const devices = [
@@ -27,7 +29,7 @@ const DevicesPage = () => {
     setShowMenu(!showMenu);
   };
 
-  const handleMenuItemPress = (menuItem) => {
+  const handleMenuItemPress = (menuItem: string) => {
     // Functionality for menu item press
     console.log('Menu item pressed:', menuItem);
     // You can navigate or perform other actions based on the selected menu item
@@ -35,7 +37,7 @@ const DevicesPage = () => {
     toggleMenu();
   };
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
     scrollY.setValue(offsetY);
   };
@@ -46,7 +48,7 @@ const DevicesPage = () => {
     extrapolate: 'clamp',
   });
 
-  const handleSearch = (text) => {
+  const handleSearch = (text: string) => {
     setSearchQuery(text);
     // Perform search/filtering functionality here
     console.log('Search Query:', text);

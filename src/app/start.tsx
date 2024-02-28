@@ -7,11 +7,6 @@ import { useRouter } from 'expo-router';
 export default function Start() {
   const router = useRouter();
 
-  // Function to handle navigation to the home page
-  const handleHomePress = () => {
-    router.push('/home');
-  };
-
   // Function to handle navigation to the login page
   const handleLoginPress = () => {
     router.push('/login');
@@ -43,10 +38,6 @@ export default function Start() {
         {/* Button to navigate to the sign up page */}
         <Pressable style={styles.button} onPress={handleCreateAccount}>
           <Text style={styles.buttonText}>Create Account</Text>
-        </Pressable>
-        {/* Button to navigate to the home page */}
-        <Pressable style={styles.button} onPress={handleHomePress}>
-          <Text style={styles.buttonText}>Home</Text>
         </Pressable>
       </View>
     </View>
