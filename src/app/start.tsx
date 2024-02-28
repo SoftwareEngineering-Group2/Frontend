@@ -1,18 +1,28 @@
+// Import necessary modules
 import React from 'react';
 import { StyleSheet, Image, View, Pressable, Text, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 
-export default function start() {
+// Define the functional component
+export default function Start() {
   const router = useRouter();
 
+  // Function to handle navigation to the home page
+  const handleHomePress = () => {
+    router.push('/home');
+  };
+
+  // Function to handle navigation to the login page
   const handleLoginPress = () => {
     router.push('/login');
   };
 
+  // Function to handle navigation to the sign up page
   const handleCreateAccount = () => {
     router.push('/signup');
   };
 
+  // Return the JSX layout
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -26,20 +36,28 @@ export default function start() {
         <Text style={styles.description}>
           Control everything in your home connect. Lights, X ,X, security and more.
         </Text>
+        {/* Button to navigate to the login page */}
         <Pressable style={styles.button} onPress={handleLoginPress}>
           <Text style={styles.buttonText}>Log In</Text>
         </Pressable>
+        {/* Button to navigate to the sign up page */}
         <Pressable style={styles.button} onPress={handleCreateAccount}>
           <Text style={styles.buttonText}>Create Account</Text>
+        </Pressable>
+        {/* Button to navigate to the home page */}
+        <Pressable style={styles.button} onPress={handleHomePress}>
+          <Text style={styles.buttonText}>Home</Text>
         </Pressable>
       </View>
     </View>
   );
 };
 
+// Define window dimensions
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+// Define styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -105,10 +123,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-
-
-
-
-
-
