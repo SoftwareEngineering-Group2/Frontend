@@ -3,6 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, 
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
 import { NativeSyntheticEvent } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { router } from 'expo-router';
+import { useAuthentication } from '../hooks/useAuth';
 
 // Mock data (to be replaced with API data)
 const devices = [
@@ -15,7 +19,11 @@ const devices = [
   { id: 7, name: 'Device 7', status: 'Off' },
 ];
 
-const DevicesPage = () => {
+
+const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
+
+  const { user } = useAuthentication();
+
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,6 +62,11 @@ const DevicesPage = () => {
     console.log('Search Query:', text);
   };
 
+  const handleSignOut= () => {
+    FIREBASE_AUTH.signOut()
+    navigation.navigate("/start")
+  }
+
   return (
     <ScrollView 
       contentContainerStyle={styles.scrollContainer}
@@ -61,6 +74,7 @@ const DevicesPage = () => {
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
+      <Text>Welcome {user?.email}!</Text>
         <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
           <TouchableOpacity onPress={toggleMenu}>
             <AntDesign name="menuunfold" size={24} color="black" />
@@ -104,12 +118,17 @@ const DevicesPage = () => {
               <AntDesign name="setting" size={24} color="black" />
               <Text>Settings</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleSignOut()}>
+              <Text>Sign Out</Text>
+            </TouchableOpacity>
           </View>
         </Modal>
       </View>
     </ScrollView>
   );
 };
+
+export default Home;
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -211,7 +230,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DevicesPage;
+
 
 
 

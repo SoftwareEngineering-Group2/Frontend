@@ -2,19 +2,19 @@
 import React from 'react';
 import { StyleSheet, Image, View, Pressable, Text, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { NavigationProp } from '@react-navigation/native';
 
 // Define the functional component
-export default function Start() {
-  const router = useRouter();
+const Start = ({ navigation }: { navigation: NavigationProp<any, any> })=>{
 
   // Function to handle navigation to the login page
   const handleLoginPress = () => {
-    router.push('/login');
+    navigation.navigate('login');
   };
 
   // Function to handle navigation to the sign up page
   const handleCreateAccount = () => {
-    router.push('/signup');
+    navigation.navigate('signup');
   };
 
   // Return the JSX layout
@@ -43,6 +43,8 @@ export default function Start() {
     </View>
   );
 };
+
+export default Start;
 
 // Define window dimensions
 const windowWidth = Dimensions.get('window').width;

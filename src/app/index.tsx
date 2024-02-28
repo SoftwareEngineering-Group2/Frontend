@@ -1,24 +1,11 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { Redirect } from 'expo-router'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NavigationContainer } from '@react-navigation/native';
-import start from './start';
-import login from './login';
+import React, { useEffect } from 'react';
+import { useAuthentication } from '../hooks/useAuth';
+import UserStack from './userStack';
+import AuthStack from './authStack';
 
-const Stack = createNativeStackNavigator();
+export default function RootNavigation() {
+  const { user } = useAuthentication();
+  console.log(user)
 
-export default function index(){
-  return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator initialRouteName='start'>
-        <Stack.Screen name='start' component={start} options={{headerShown: false}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return user ? <UserStack /> : <AuthStack />;
 }
-
-
-/* const index = () => {
-  return <Redirect href="/start" />;
-} */

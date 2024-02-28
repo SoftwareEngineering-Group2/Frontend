@@ -10,9 +10,48 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { NavigationProp } from '@react-navigation/native';
 
-const SignUp = () => {
-  const router = useRouter();
+
+interface RouterProps{
+  navigation: NavigationProp<any, any>
+}
+const SignUp = ({navigation}:RouterProps) => {
+
+  const [value, setValue] = React.useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    error: ''
+  })
+
+  async function signUp() {
+    if(value.password === value.confirmPassword){
+      if (value.email === '' || value.password === '') {
+        setValue({
+          ...value,
+          error: 'Email and password are mandatory.'
+        })
+        return;
+      }
+    }else{
+      alert("Passwords does not match!!!")
+    }
+    
+
+    try {
+      await createUserWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
+      navigation.navigate('Sign In');
+    } catch (error) {
+      setValue({
+        ...value,
+        /* error: error.message, */
+      })
+    }
+  }
+
+
+  /* const router = useRouter();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false)
@@ -36,15 +75,16 @@ const SignUp = () => {
       alert("Passwords does not match!")
     }
   }
+  */
 
   const handleLoginPress = () => {
-    router.push('/login');
-  };
+    navigation.navigate('/login');
+  }; 
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart House</Text>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push("/start")} >
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("/start")} >
         <Icon name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <View style={styles.form}>
@@ -52,24 +92,24 @@ const SignUp = () => {
           style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={value.email}
+          onChangeText={(text) => setValue({ ...value, email: text })}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          value={value.password}
+          onChangeText={(text) => setValue({ ...value, password: text })}
         /> 
         <TextInput
           style={styles.input}
           placeholder="Confiem Password"
           secureTextEntry
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
+          value={value.confirmPassword}
+          onChangeText={(text) => setValue({ ...value, confirmPassword: text })}
         />      
-        <TouchableOpacity style={styles.button} onPress={singUp}>
+        <TouchableOpacity style={styles.button} onPress={signUp}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
       </View>
