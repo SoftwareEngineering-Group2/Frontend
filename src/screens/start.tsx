@@ -24,12 +24,12 @@ const Start = ({ navigation }: { navigation: NavigationProp<any, any> })=>{
         <Image source={require('../../assets/images/start.png')} style={styles.backgroundImage} resizeMode="cover" />
         <View style={styles.overlay}>
           <Text style={styles.overlayTextMain}>Welcome to your smart home</Text>
-          <Text style={styles.overlayTextSub}>A single app for all your smart devices</Text>
+          <Text style={styles.overlayTextSub}>One App for All Your Smart Devices</Text>
         </View>
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.description}>
-          Control everything in your home connect. Lights, X ,X, security and more.
+        Take full control of your home's devices. Lights, security, and more, all in one place.
         </Text>
         {/* Button to navigate to the login page */}
         <Pressable style={styles.button} onPress={handleLoginPress}>
@@ -76,15 +76,21 @@ const styles = StyleSheet.create({
   overlayTextMain: {
     fontSize: windowWidth > 768 ? 48 : 36, // Adjust font size based on screen width
     fontWeight: 'bold',
-    color: '#fff', // Change text color to white
+    color: '#007bff', // Change text color to white
     marginBottom: 20, // Add more bottom margin for spacing
     textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
   },
   overlayTextSub: {
     fontSize: windowWidth > 768 ? 30 : 24, // Adjust font size based on screen width
-    color: '#fff', // Change text color to a lighter shade of blue or a color that complements your image
+    color: '#007bff', // Change text color to a lighter shade of blue or a color that complements your image
     marginBottom: 20, // Add more bottom margin for spacing
     textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
   },
   textContainer: {
     paddingHorizontal: 20,
@@ -99,7 +105,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#4CAFEB', // Change button color
+    backgroundColor: '#007bff', // Change button color
     borderRadius: 4,
     paddingVertical: 16, // Increase vertical padding for more spacing
     paddingHorizontal: 24,
