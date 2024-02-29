@@ -20,6 +20,12 @@ const devices = [
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const { user } = useAuthentication();
 
+  // Detect screen width
+  const windowWidth = Dimensions.get('window').width;
+
+  // Calculate number of columns based on screen width
+  const numColumns = windowWidth > 600 ? 2 : 1;
+
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,7 +70,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   }
 
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={styles.scrollContainer}
       onScroll={handleScroll}
       scrollEventThrottle={16}
@@ -84,8 +90,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {devices.map(device => (
-            <View key={device.id} style={[styles.card]}>
+          {devices.map((device) => (
+            <View key={device.id} style={[styles.card, { width: `${90 / numColumns}%` }]}>
               <View style={styles.imagePlaceholder} />
               <Text style={styles.name}>{device.name}</Text>
               <Text>Status: {device.status}</Text>
@@ -146,9 +152,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cardsContainer: {
-    flexDirection: 'row', 
-    flexWrap: 'wrap', 
-    justifyContent: 'space-around', 
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
   card: {
     backgroundColor: '#fff',
@@ -163,16 +169,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '45%', // Default width
-    marginHorizontal: '2.5%', // Default margin
-    alignItems: 'center', // Center content horizontally
+    alignItems: 'center',
   },
   imagePlaceholder: {
     width: 100,
     height: 100,
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: '#ccc', 
+    backgroundColor: '#ccc',
   },
   name: {
     fontWeight: 'bold',
@@ -206,17 +210,17 @@ const styles = StyleSheet.create({
     left: 40,
   },
   menuItem: {
-    flexDirection: 'row', // Align icon and text horizontally
-    alignItems: 'center', // Center items vertically
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 10,
   },
   searchBar: {
-    width: '50%',
+    width: '70%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10, // Matching border radius with cards
+    borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
