@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter,NativeSyntheticEvent, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
-import { NativeSyntheticEvent } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import { router } from 'expo-router';
 import { useAuthentication } from '../hooks/useAuth';
 
 // Mock data (to be replaced with API data)
@@ -20,7 +18,6 @@ const devices = [
 ];
 
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
-
   const { user } = useAuthentication();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -117,7 +114,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
               <AntDesign name="setting" size={24} color="black" />
               <Text>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSignOut()}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
+              <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
               <Text>Sign Out</Text>
             </TouchableOpacity>
           </View>
