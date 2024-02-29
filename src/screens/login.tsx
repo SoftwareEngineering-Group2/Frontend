@@ -1,55 +1,64 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { NavigationProp } from '@react-navigation/native';
 
-export default function login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
+  
+  const [value, setValue] = React.useState({
+    email: '',
+    password: '',
+    error: ''
+  })
   const [loading, setLoading] = useState(false)
-  const auth = FIREBASE_AUTH; 
 
-  const signIn = async () =>{
-    setLoading(true);
-    try{
-      const response = await signInWithEmailAndPassword(auth, email, password)
-      console.log(response)
-      router.push('/home');
-    }catch (error: any){
-      console.log(error);
-      alert('Sign in failed: ' + error.message);
-    }finally{
-      setLoading(false)
+  async function signIn() {
+    console.log("Working??? ")
+    if (value.email === '' || value.password === '') {
+      setValue({
+        ...value,
+        error: 'Email and password are mandatory.'
+      })
+      return;
+    }
+
+    try {
+      await signInWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
+    } catch (error) {
+      setValue({
+        ...value,
+        /* error: error.message, */
+      })
     }
   }
-
-  const router = useRouter();
-
   const handleCreateAccount = () => {
-    router.push('/signup');
+    navigation.navigate('/signup');
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push("/start")}>
+      
+      {/* <KeyboardAvoidingView behavior='padding'> */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("/start")}>
         <Icon name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <Text style={styles.title}>Welcome back</Text>
       <TextInput
-        value={email}
+        value={value.email}
         style={styles.input}
         placeholder="Email"
         autoCapitalize='none'
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setValue({ ...value, email: text })}
       />
       <TextInput
-        value={password}
+        value={value.password}
         style={styles.input}
         placeholder="Password"
         secureTextEntry={true}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={(text) => setValue({ ...value, password: text })}
       />
 
       { loading ? (
@@ -64,9 +73,12 @@ export default function login() {
         </TouchableOpacity>
       </>
       )}  
+      {/* </KeyboardAvoidingView> */}
     </View> 
   );
 }
+
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -99,8 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CAF50',
     flex: 1,
     position: 'absolute',
-    top: 20, // Adjust this value to position the button vertically
-    left: 20, // Adjust this value to position the button horizontally
+    top: 20, 
+    left: 20, 
   },
   buttonText: {
     color: 'white',
