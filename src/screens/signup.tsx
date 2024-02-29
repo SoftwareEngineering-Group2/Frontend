@@ -51,15 +51,12 @@ const SignUp = ({navigation}:RouterProps) => {
   }
 
   const handleLoginPress = () => {
-    navigation.navigate('/login');
+    navigation.navigate('login');
   }; 
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart House</Text>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("/start")} >
-        <Icon name="arrow-back" size={24} color="white" />
-      </TouchableOpacity>
       <View style={styles.form}>
       <TextInput
           style={styles.input}
@@ -77,7 +74,7 @@ const SignUp = ({navigation}:RouterProps) => {
         /> 
         <TextInput
           style={styles.input}
-          placeholder="Confiem Password"
+          placeholder="Confirm Password"
           secureTextEntry
           value={value.confirmPassword}
           onChangeText={(text) => setValue({ ...value, confirmPassword: text })}

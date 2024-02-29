@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeSyntheticEvent } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
-import { NativeSyntheticEvent } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import { router } from 'expo-router';
 import { useAuthentication } from '../hooks/useAuth';
 
 // Mock data (to be replaced with API data)
@@ -19,9 +17,7 @@ const devices = [
   { id: 7, name: 'Device 7', status: 'Off' },
 ];
 
-
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
-
   const { user } = useAuthentication();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -74,7 +70,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
-      <Text>Welcome {user?.email}!</Text>
+        <Text>Welcome {user?.email}!</Text>
         <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
           <TouchableOpacity onPress={toggleMenu}>
             <AntDesign name="menuunfold" size={24} color="black" />
@@ -118,7 +114,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
               <AntDesign name="setting" size={24} color="black" />
               <Text>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSignOut()}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
+              <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
               <Text>Sign Out</Text>
             </TouchableOpacity>
           </View>
@@ -191,7 +188,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 5,
     marginTop: 10,
-
   },
   controlUnitText: {
     color: '#fff',
@@ -229,6 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
 
 
 
