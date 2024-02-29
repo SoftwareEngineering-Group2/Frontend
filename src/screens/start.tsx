@@ -54,7 +54,6 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFF', // Change background color to white
   },
   imageContainer: {
     flex: 1,

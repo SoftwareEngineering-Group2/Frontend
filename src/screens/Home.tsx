@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter,NativeSyntheticEvent, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
-import { NativeSyntheticEvent } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
-import { router } from 'expo-router';
 import { useAuthentication } from '../hooks/useAuth';
 
 // Mock data (to be replaced with API data)
@@ -19,9 +17,7 @@ const devices = [
   { id: 7, name: 'Device 7', status: 'Off' },
 ];
 
-
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
-
   const { user } = useAuthentication();
 
   const [showMenu, setShowMenu] = useState(false);
@@ -74,7 +70,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
-      <Text>Welcome {user?.email}!</Text>
+        <Text>Welcome {user?.email}!</Text>
         <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
           <TouchableOpacity onPress={toggleMenu}>
             <AntDesign name="menuunfold" size={24} color="black" />
@@ -82,14 +78,14 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         </Animated.View>
         <Text style={styles.heading}>Devices</Text>
         <TextInput
-          style={[styles.searchBar, styles.card, styles.biggerCard]} // Matching styles with cards
+          style={[styles.searchBar]}
           placeholder="Search Devices"
           value={searchQuery}
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
           {devices.map(device => (
-            <View key={device.id} style={[styles.card, styles.biggerCard]}>
+            <View key={device.id} style={[styles.card]}>
               <View style={styles.imagePlaceholder} />
               <Text style={styles.name}>{device.name}</Text>
               <Text>Status: {device.status}</Text>
@@ -118,7 +114,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
               <AntDesign name="setting" size={24} color="black" />
               <Text>Settings</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleSignOut()}>
+            <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
+              <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
               <Text>Sign Out</Text>
             </TouchableOpacity>
           </View>
@@ -149,9 +146,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cardsContainer: {
-    flexDirection: 'row', // Default to horizontal layout
-    flexWrap: 'wrap', // Allow wrapping cards when space is insufficient
-    justifyContent: 'center', // Center cards horizontally
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'space-around', 
   },
   card: {
     backgroundColor: '#fff',
@@ -166,13 +163,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '40%',
-    marginHorizontal: '2.5%', // Add margin between cards
+    width: '45%', // Default width
+    marginHorizontal: '2.5%', // Default margin
     alignItems: 'center', // Center content horizontally
-  },
-  biggerCard: {
-    width: '48%', 
-    marginBottom: 25, // Increase margin bottom for better spacing
   },
   imagePlaceholder: {
     width: 100,
@@ -191,7 +184,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 5,
     marginTop: 10,
-
   },
   controlUnitText: {
     color: '#fff',
@@ -220,7 +212,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   searchBar: {
-    width: '90%',
+    width: '50%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
@@ -229,6 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
 
 
 
