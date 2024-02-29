@@ -48,7 +48,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
-    } catch (error) {
+    } catch (error: any) {
       setValue({
         ...value,
         error: error.message,
@@ -96,7 +96,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           </TouchableOpacity>
         )}
       </View>
-      <TouchableOpacity onPress={handleCreateAccount} style={styles.signUpLink}>
+      <TouchableOpacity onPress={handleCreateAccount} style={styles.signUpText}>
         <Text style={styles.signUpText}>
           New user? <Text style={styles.signUpLinkText}>Sign Up</Text>
         </Text>
