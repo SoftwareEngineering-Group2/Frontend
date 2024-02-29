@@ -50,33 +50,6 @@ const SignUp = ({navigation}:RouterProps) => {
     }
   }
 
-
-  /* const router = useRouter();
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false)
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const auth = FIREBASE_AUTH; 
-
-  const singUp = async () =>{
-    setLoading(true);
-    if(password === confirmPassword){
-      try{
-        const response = await createUserWithEmailAndPassword(auth, email, password);
-        console.log(response)
-        alert("Check your emails")
-      }catch (error: any){
-        console.log(error);
-        alert('Sign in failed: ' + error.message);
-      }finally{
-        setLoading(false)
-      }
-    }else{
-      alert("Passwords does not match!")
-    }
-  }
-  */
-
   const handleLoginPress = () => {
     navigation.navigate('/login');
   }; 

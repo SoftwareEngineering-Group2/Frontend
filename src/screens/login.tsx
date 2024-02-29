@@ -38,27 +38,6 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     navigation.navigate('/signup');
   };
 
- /*  const [loading, setLoading] = useState(false)
-  const auth = FIREBASE_AUTH; 
-
-  const signIn = async () =>{
-    setLoading(true);
-    try{
-      const response = await signInWithEmailAndPassword(auth, email, password)
-      console.log(response)
-      console.log("From Login")
-    }catch (error: any){
-      console.log(error);
-      alert('Sign in failed: ' + error.message);
-    }finally{
-      setLoading(false)
-    }
-  } */
-
-  /* const router = useRouter();
-
-   */
-
   return (
     <View style={styles.container}>
       
@@ -132,8 +111,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CAF50',
     flex: 1,
     position: 'absolute',
-    top: 20, // Adjust this value to position the button vertically
-    left: 20, // Adjust this value to position the button horizontally
+    top: 20, 
+    left: 20, 
   },
   buttonText: {
     color: 'white',
