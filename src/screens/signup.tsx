@@ -13,10 +13,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 
 
-interface RouterProps{
-  navigation: NavigationProp<any, any>
-}
-const SignUp = ({navigation}:RouterProps) => {
+const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
   const [value, setValue] = React.useState({
     email: '',
@@ -51,7 +48,7 @@ const SignUp = ({navigation}:RouterProps) => {
   }
 
   const handleLoginPress = () => {
-    navigation.navigate('/login');
+    navigation.navigate('login');
   }; 
 
   return (

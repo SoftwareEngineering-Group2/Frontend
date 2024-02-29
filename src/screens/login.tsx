@@ -35,7 +35,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     }
   }
   const handleCreateAccount = () => {
-    navigation.navigate('/signup');
+    navigation.navigate('signup');
   };
 
   return (
