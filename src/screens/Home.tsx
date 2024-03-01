@@ -40,12 +40,19 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   };
 
   const handleMenuItemPress = (menuItem: string) => {
-    // Functionality for menu item press
     console.log('Menu item pressed:', menuItem);
-    // You can navigate or perform other actions based on the selected menu item
-    // For simplicity, let's just close the menu for now
-    toggleMenu();
+    if (menuItem === 'Profile') {
+      navigation.navigate('profile');
+    } else if (menuItem === 'Home') {
+      navigation.navigate('Home');
+    } else if (menuItem === 'Settings') {
+      navigation.navigate('settings');
+    } else {
+      toggleMenu();
+    }
   };
+  
+  
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
