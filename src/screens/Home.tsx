@@ -26,6 +26,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   // Calculate number of columns based on screen width
   const numColumns = windowWidth > 600 ? 2 : 1;
 
+  const cardWidth = 1075 / numColumns;
+
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
   const [searchQuery, setSearchQuery] = useState('');
@@ -76,6 +78,10 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     navigation.navigate("/start")
   }
 
+  const filteredDevices = devices.filter(device =>
+    device.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
@@ -97,8 +103,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {devices.map((device) => (
-            <View key={device.id} style={[styles.card, { width: `${90 / numColumns}%` }]}>
+          {filteredDevices.map(device => (
+            <View key={device.id} style={[styles.card, { width: cardWidth }]}>
               <View style={styles.imagePlaceholder} />
               <Text style={styles.name}>{device.name}</Text>
               <Text>Status: {device.status}</Text>
@@ -152,6 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     position: 'relative',
+    width: '100%', // or use flexGrow: 1
   },
   heading: {
     fontSize: 24,
@@ -162,6 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    width: '60%'
   },
   card: {
     backgroundColor: '#fff',
@@ -223,13 +231,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   searchBar: {
-    width: '70%',
+    width: '40%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
 });
 
