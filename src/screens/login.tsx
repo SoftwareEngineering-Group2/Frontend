@@ -51,7 +51,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     } catch (error) {
       setValue({
         ...value,
-        error: error.message,
+        /* error: error.message, */
       });
     } finally {
       setLoading(false);
@@ -96,7 +96,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           </TouchableOpacity>
         )}
       </View>
-      <TouchableOpacity onPress={handleCreateAccount} style={styles.signUpLink}>
+      <TouchableOpacity onPress={handleCreateAccount} style={styles.signUpText}>
         <Text style={styles.signUpText}>
           New user? <Text style={styles.signUpLinkText}>Sign Up</Text>
         </Text>

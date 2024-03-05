@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, 
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useAuthentication } from '../hooks/useAuth';
 
 // Mock data (to be replaced with API data)
@@ -58,11 +57,6 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     console.log('Search Query:', text);
   };
 
-  const handleSignOut= () => {
-    FIREBASE_AUTH.signOut()
-    navigation.navigate("/start")
-  }
-
   return (
     <ScrollView 
       contentContainerStyle={styles.scrollContainer}
@@ -94,32 +88,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
               </TouchableOpacity>
             </View>
           ))}
-        </View>
-        <Modal
-          visible={showMenu}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={toggleMenu}
-        >
-          <View style={styles.menuContainer}>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Home')} style={styles.menuItem}>
-              <AntDesign name="home" size={24} color="black" />
-              <Text>Home</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Profile')} style={styles.menuItem}>
-              <AntDesign name="user" size={24} color="black" />
-              <Text>Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Settings')} style={styles.menuItem}>
-              <AntDesign name="setting" size={24} color="black" />
-              <Text>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
-              <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
-              <Text>Sign Out</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+        </View>       
       </View>
     </ScrollView>
   );
