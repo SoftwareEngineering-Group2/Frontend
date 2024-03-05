@@ -11,3 +11,7 @@ export const updateDeviceState = (deviceType: string, newState: { state: string 
 export const getDeviceImage = (deviceType: string) => {
   return httpClient.get(`/device/${deviceType}/image`);
 };
+
+export const getDeviceNames = () => {
+  return httpClient.get(`/devices/name`);
+};
