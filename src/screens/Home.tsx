@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter,NativeSyntheticEvent, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useAuthentication } from '../hooks/useAuth';
+import { getDeviceNames } from '../api/deviceService';
 
 // Mock data (to be replaced with API data)
 const devices = [
@@ -18,6 +19,22 @@ const devices = [
 ];
 
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
+  const [deviceNames, setDeviceNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchDeviceNames = async () => {
+      try {
+        const response = await getDeviceNames();
+        console.log('Device names:', response.data.deviceNames);
+        setDeviceNames(response.data.deviceNames);
+      } catch (error) {
+        console.error('Error fetching device names:', error);
+      }
+    };
+
+    fetchDeviceNames();
+  }, []);
+
   const { user } = useAuthentication();
 
   // Detect screen width
@@ -53,8 +70,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       toggleMenu();
     }
   };
-  
-  
+
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -62,8 +78,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   };
 
   const menuTranslateY = scrollY.interpolate({
-    inputRange: [0, 100], 
-    outputRange: [20, -80], 
+    inputRange: [0, 100],
+    outputRange: [20, -80],
     extrapolate: 'clamp',
   });
 
@@ -73,7 +89,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     console.log('Search Query:', text);
   };
 
-  const handleSignOut= () => {
+  const handleSignOut = () => {
     FIREBASE_AUTH.signOut()
     navigation.navigate("/start")
   }
