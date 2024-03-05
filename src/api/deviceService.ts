@@ -40,6 +40,16 @@ export const getDeviceNames = async () => {
   }
 };
 
+export const getAllDevices = async () => {
+  try {
+    const response = await httpClient.get(`/devices/state`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
 const handleApiError = (error: any) => {
   if (error.response) {
     // The request was made and the server responded with a status code
