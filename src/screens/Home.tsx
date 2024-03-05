@@ -5,34 +5,48 @@ import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useAuthentication } from '../hooks/useAuth';
-import { getDeviceNames } from '../api/deviceService';
+import { getAllDevices } from '../api/deviceService';
 
-// Mock data (to be replaced with API data)
-const devices = [
-  { id: 1, name: 'Device 1', status: 'On' },
-  { id: 2, name: 'Device 2', status: 'Off' },
-  { id: 3, name: 'Device 3', status: 'On' },
-  { id: 4, name: 'Device 4', status: 'Off' },
-  { id: 5, name: 'Device 5', status: 'On' },
-  { id: 6, name: 'Device 6', status: 'On' },
-  { id: 7, name: 'Device 7', status: 'Off' },
-];
+
+interface Device {
+  id: number;
+  name: string;
+  status: string;
+}
 
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
-  const [deviceNames, setDeviceNames] = useState<string[]>([]);
+  const [devices, setDevices] = useState<Device[]>([]);
 
   useEffect(() => {
-    const fetchDeviceNames = async () => {
+    const fetchDevices = async () => {
       try {
-        const response = await getDeviceNames();
-        console.log('Device names:', response.data.deviceNames);
-        setDeviceNames(response.data.deviceNames);
+        const response = await getAllDevices();
+        const apiDevices = response.allDevices;
+
+        const mappedDevices: Device[] =
+          apiDevices.map((apiDevice: { id: string; deviceName: string; deviceState: string }) => {
+
+            let status: string;
+            if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
+              status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
+            } else {
+              status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
+            }
+
+            return {
+              id: Number(apiDevice.id),
+              name: apiDevice.deviceName,
+              status: status,
+            };
+          });
+
+        setDevices(mappedDevices);
       } catch (error) {
-        console.error('Error fetching device names:', error);
+        console.error('Error fetching devices:', error);
       }
     };
 
-    fetchDeviceNames();
+    fetchDevices();
   }, []);
 
   const { user } = useAuthentication();
@@ -119,11 +133,11 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {filteredDevices.map(device => (
-            <View key={device.id} style={[styles.card, { width: cardWidth }]}>
+          {filteredDevices.map(devices => (
+            <View key={devices.id} style={[styles.card, { width: cardWidth }]}>
               <View style={styles.imagePlaceholder} />
-              <Text style={styles.name}>{device.name}</Text>
-              <Text>Status: {device.status}</Text>
+              <Text style={styles.name}>{devices.name}</Text>
+              <Text>Status: {devices.status}</Text>
               <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
