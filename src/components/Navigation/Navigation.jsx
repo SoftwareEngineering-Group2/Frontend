@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; // Import AntDesign from @expo/vector-icons
+import { AntDesign } from '@expo/vector-icons'; 
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import styles from './navigationStyle'
 
@@ -18,15 +18,13 @@ const NavBar = ({ navigation }) => {
 
   const handleSignOut= () => {
     FIREBASE_AUTH.signOut()
-    navigation.navigate("/start")
   }
-
 
   return (
     <View style={styles.menuContainer}>
       <TouchableOpacity onPress={() => handleMenuItemPress('Home')} style={styles.menuItem}>
         <AntDesign name="home" size={24} color="black" />
-        <Text>Home</Text>
+        <Text style={styles.homeText}>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleMenuItemPress('Profile')} style={styles.menuItem}>
         <AntDesign name="user" size={24} color="black" />
