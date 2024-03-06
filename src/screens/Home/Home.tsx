@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
 import { getAllDevices, getDeviceImage } from '../../api/deviceService';
 import styles from './HomeStyle'
+import Modal from '../../components/Modal/Modal';
 
-interface Device {
+export interface Device {
   id: number;
   name: string;
   status: string;
@@ -14,6 +15,7 @@ interface Device {
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
+  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -63,10 +65,11 @@ const Home = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
   const [searchQuery, setSearchQuery] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleControlUnitPress = () => {
-    // Functionality for controlling unit
-    console.log('Control Unit pressed');
+  const toggleModal = (device: Device) => {
+    setSelectedDevice(device);
+    setModalVisible(true);
   };
 
   const toggleMenu = () => {
@@ -99,7 +102,6 @@ const Home = () => {
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
-      onScroll={handleScroll}
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
@@ -114,19 +116,26 @@ const Home = () => {
         <View style={styles.cardsContainer}>
           {filteredDevices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
-          <Image
-            source={{ uri: device.imageUrl }}
-            style={[styles.image, { aspectRatio: 1 }]} // Add aspectRatio to maintain image aspect ratio
-            resizeMode='contain' // Change resizeMode to 'contain'
-          />
+              <Image
+                source={{ uri: device.imageUrl }}
+                style={[styles.image, { aspectRatio: 1 }]}
+                resizeMode='contain'
+              />
               <Text style={styles.name}>{device.name}</Text>
               <Text>Status: {device.status}</Text>
-              <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
+              <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
             </View>
           ))}
-        </View>       
+        </View>
+        {selectedDevice && (
+          <Modal
+          modalVisible={modalVisible}
+          toggleModal={() => setModalVisible(!modalVisible)}
+          deviceInfo={selectedDevice}
+        />
+        )}
       </View>
     </ScrollView>
   );
