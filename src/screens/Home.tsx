@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions } from 'react-native';
-import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { useAuthentication } from '../hooks/useAuth';
 import { getAllDevices } from '../api/deviceService';
-
 
 interface Device {
   id: number;
@@ -72,19 +69,6 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     setShowMenu(!showMenu);
   };
 
-  const handleMenuItemPress = (menuItem: string) => {
-    console.log('Menu item pressed:', menuItem);
-    if (menuItem === 'Profile') {
-      navigation.navigate('profile');
-    } else if (menuItem === 'Home') {
-      navigation.navigate('Home');
-    } else if (menuItem === 'Settings') {
-      navigation.navigate('settings');
-    } else {
-      toggleMenu();
-    }
-  };
-
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -103,10 +87,6 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     console.log('Search Query:', text);
   };
 
-  const handleSignOut = () => {
-    FIREBASE_AUTH.signOut()
-    navigation.navigate("/start")
-  }
 
   const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -120,11 +100,11 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     >
       <View style={styles.container}>
         <Text>Welcome {user?.email}!</Text>
-        <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
+        {/* <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
           <TouchableOpacity onPress={toggleMenu}>
             <AntDesign name="menuunfold" size={24} color="black" />
           </TouchableOpacity>
-        </Animated.View>
+        </Animated.View> */}
         <Text style={styles.heading}>Devices</Text>
         <TextInput
           style={[styles.searchBar]}
@@ -143,32 +123,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
               </TouchableOpacity>
             </View>
           ))}
-        </View>
-        <Modal
-          visible={showMenu}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={toggleMenu}
-        >
-          <View style={styles.menuContainer}>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Home')} style={styles.menuItem}>
-              <AntDesign name="home" size={24} color="black" />
-              <Text>Home</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Profile')} style={styles.menuItem}>
-              <AntDesign name="user" size={24} color="black" />
-              <Text>Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleMenuItemPress('Settings')} style={styles.menuItem}>
-              <AntDesign name="setting" size={24} color="black" />
-              <Text>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
-              <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
-              <Text>Sign Out</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+        </View>       
       </View>
     </ScrollView>
   );

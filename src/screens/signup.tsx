@@ -5,11 +5,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
 
-interface RouterProps {
-  navigation: NavigationProp<any, any>;
-}
 
-const SignUp = ({ navigation }: RouterProps) => {
+const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const [value, setValue] = useState({
     email: '',
     password: '',
