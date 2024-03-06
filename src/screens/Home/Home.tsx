@@ -9,7 +9,7 @@ import Modal from '../../components/Modal/Modal';
 export interface Device {
   id: number;
   name: string;
-  status: string;
+  status: boolean;
   imageUrl: string;
 }
 
@@ -24,13 +24,9 @@ const Home = () => {
         const apiDevices = response.allDevices;
 
         const mappedDevices: Device[] = await Promise.all(
-          apiDevices.map(async (apiDevice: { id: string; deviceName: string; deviceState: string }) => {
-            let status: string;
-            if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
-              status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
-            } else {
-              status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
-            }
+          apiDevices.map(async (apiDevice: { id: string; deviceName: string; deviceState: boolean }) => {
+            let status: boolean;
+            status = apiDevice.deviceState
             const imageUrl = await getDeviceImage(apiDevice.deviceName);
 
 
@@ -50,7 +46,7 @@ const Home = () => {
     };
 
     fetchDevices();
-  }, []);
+  }, [devices]);
 
   const { user } = useAuthentication();
 
@@ -122,7 +118,7 @@ const Home = () => {
                 resizeMode='contain'
               />
               <Text style={styles.name}>{device.name}</Text>
-              <Text>Status: {device.status}</Text>
+              <Text>Status: {device.status ? "On" : "Off"}</Text>
               <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
