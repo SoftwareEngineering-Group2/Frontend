@@ -12,9 +12,7 @@ const NavBar = ({ navigation }) => {
       navigation.navigate('Home');
     } else if (menuItem === 'Settings') {
       navigation.navigate('Settings');
-    } else {
-      toggleMenu();
-    }
+    } 
   };
 
   const handleSignOut= () => {
@@ -38,7 +36,7 @@ const NavBar = ({ navigation }) => {
         <Text>Settings</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
-        <AntDesign name="logout" size={24} color="black" /> {/* Added icon for Sign Out */}
+        <AntDesign name="logout" size={24} color="black" /> 
         <Text>Sign Out</Text>
       </TouchableOpacity>
     </View>
@@ -55,10 +53,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: 'lightgray',
-    /* position: 'absolute', // Position at the bottom
-    bottom: 0, // Stick to the bottom
-    left: 0, // Align to the left
-    right: 0, // Align to the right */
   },
   menuItem: {
     flexDirection: 'row',
