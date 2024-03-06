@@ -10,7 +10,7 @@ export const getDeviceState = async (deviceType: string) => {
   }
 };
 
-export const updateDeviceState = async (deviceType: string, newState: { state: string }) => {
+export const updateDeviceState = async (deviceType: string | undefined, newState: { state: boolean | undefined }) => {
   try {
     const response = await httpClient.post(`/device/${deviceType}`, newState);
     return response.data;
@@ -23,7 +23,7 @@ export const updateDeviceState = async (deviceType: string, newState: { state: s
 export const getDeviceImage = async (deviceType: string) => {
   try {
     const response = await httpClient.get(`/device/${deviceType}/image`);
-    return response.data;
+    return response.data.imageUrl;
   } catch (error) {
     handleApiError(error);
     throw error;
