@@ -3,15 +3,25 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import AntDesign from @expo/vector-icons
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 
-const CustomHeader = ({ navigation }) => {
-  const handleMenuItemPress = (screen) => {
-    navigation.navigate(screen);
+const NavBar = ({ navigation }) => {
+  const handleMenuItemPress = (menuItem) => {
+    console.log('Menu item pressed:', menuItem);
+    if (menuItem === 'Profile') {
+      navigation.navigate('Profile');
+    } else if (menuItem === 'Home') {
+      navigation.navigate('Home');
+    } else if (menuItem === 'Settings') {
+      navigation.navigate('Settings');
+    } else {
+      toggleMenu();
+    }
   };
 
   const handleSignOut= () => {
     FIREBASE_AUTH.signOut()
     navigation.navigate("/start")
   }
+
 
   return (
     <View style={styles.menuContainer}>
@@ -43,8 +53,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     height: 60,
     backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
+    borderTopWidth: 1,
+    borderTopColor: 'lightgray',
+    /* position: 'absolute', // Position at the bottom
+    bottom: 0, // Stick to the bottom
+    left: 0, // Align to the left
+    right: 0, // Align to the right */
   },
   menuItem: {
     flexDirection: 'row',
@@ -52,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomHeader;
+export default NavBar;

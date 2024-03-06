@@ -7,8 +7,6 @@ import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
 
 
 const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
-
-const SignUp = ({ navigation }: RouterProps) => {
   const [value, setValue] = useState({
     email: '',
     password: '',
