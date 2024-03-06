@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
 
 const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   
@@ -64,30 +65,38 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
   return (
     <View style={styles.container}>
-<Text style={styles.title}>
-  <Text style={[styles.welcomeText, { textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5 }]}>
-    {greeting}
-  </Text>, 
-  <Text style={{ textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5 }}>
-    and welcome back
-  </Text>
-</Text>
-
+      <View style={styles.titleContainer}>
+        <Text style={[styles.welcomeText, { textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5 }]}>
+          {greeting}
+        </Text>
+        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
+          &amp;
+        </Text>
+        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
+          Welcome back
+        </Text>
+      </View>
       <View style={styles.card}>
-        <TextInput
-          value={value.email}
-          style={styles.input}
-          placeholder="Email"
-          autoCapitalize='none'
-          onChangeText={(text) => setValue({ ...value, email: text })}
-        />
-        <TextInput
-          value={value.password}
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={(text) => setValue({ ...value, password: text })}
-        />
+        <View style={styles.inputContainer}>
+          <Ionicons name="mail" size={24} color="#007bff" style={styles.icon} />
+          <TextInput
+            value={value.email}
+            style={styles.input}
+            placeholder="Email"
+            autoCapitalize='none'
+            onChangeText={(text) => setValue({ ...value, email: text })}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="lock-closed" size={24} color="#007bff" style={styles.icon} />
+          <TextInput
+            value={value.password}
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={(text) => setValue({ ...value, password: text })}
+          />
+        </View>
         { loading ? (
           <ActivityIndicator size="large" color="#007bff" />
         ) : (
@@ -115,14 +124,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#f0f0f0',
   },
-  title: {
-    fontSize: 24,
+  titleContainer: {
     marginBottom: 20,
-    color: '#333',
+    alignItems: 'center',
   },
   welcomeText: {
     fontWeight: 'bold',
-    fontSize: 28,
+    fontSize: 44,
     color: '#007bff',
     textTransform: 'capitalize',
   },
@@ -141,6 +149,11 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   input: {
     height: 40,
     borderColor: '#ccc',
@@ -149,6 +162,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     width: '100%',
     borderRadius: 5,
+    fontSize: 16,
   },
   button: {
     backgroundColor: '#007bff',
@@ -171,5 +185,8 @@ const styles = StyleSheet.create({
     color: '#007bff',
     textDecorationLine: 'underline',
     fontWeight: 'bold',
+  },
+  icon: {
+    marginRight: 10,
   },
 });

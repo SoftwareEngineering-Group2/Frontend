@@ -1,23 +1,62 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter,NativeSyntheticEvent, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import icons from expo
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { useAuthentication } from '../hooks/useAuth';
+import { getAllDevices } from '../api/deviceService';
 
-// Mock data (to be replaced with API data)
-const devices = [
-  { id: 1, name: 'Device 1', status: 'On' },
-  { id: 2, name: 'Device 2', status: 'Off' },
-  { id: 3, name: 'Device 3', status: 'On' },
-  { id: 4, name: 'Device 4', status: 'Off' },
-  { id: 5, name: 'Device 5', status: 'On' },
-  { id: 6, name: 'Device 6', status: 'On' },
-  { id: 7, name: 'Device 7', status: 'Off' },
-];
+
+interface Device {
+  id: number;
+  name: string;
+  status: string;
+}
 
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
+  const [devices, setDevices] = useState<Device[]>([]);
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      try {
+        const response = await getAllDevices();
+        const apiDevices = response.allDevices;
+
+        const mappedDevices: Device[] =
+          apiDevices.map((apiDevice: { id: string; deviceName: string; deviceState: string }) => {
+
+            let status: string;
+            if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
+              status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
+            } else {
+              status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
+            }
+
+            return {
+              id: Number(apiDevice.id),
+              name: apiDevice.deviceName,
+              status: status,
+            };
+          });
+
+        setDevices(mappedDevices);
+      } catch (error) {
+        console.error('Error fetching devices:', error);
+      }
+    };
+
+    fetchDevices();
+  }, []);
+
   const { user } = useAuthentication();
+
+  // Detect screen width
+  const windowWidth = Dimensions.get('window').width;
+
+  // Calculate number of columns based on screen width
+  const numColumns = windowWidth > 600 ? 2 : 1;
+
+  const cardWidth = 1075 / numColumns;
 
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
@@ -33,12 +72,18 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   };
 
   const handleMenuItemPress = (menuItem: string) => {
-    // Functionality for menu item press
     console.log('Menu item pressed:', menuItem);
-    // You can navigate or perform other actions based on the selected menu item
-    // For simplicity, let's just close the menu for now
-    toggleMenu();
+    if (menuItem === 'Profile') {
+      navigation.navigate('profile');
+    } else if (menuItem === 'Home') {
+      navigation.navigate('Home');
+    } else if (menuItem === 'Settings') {
+      navigation.navigate('settings');
+    } else {
+      toggleMenu();
+    }
   };
+
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -46,8 +91,8 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   };
 
   const menuTranslateY = scrollY.interpolate({
-    inputRange: [0, 100], 
-    outputRange: [20, -80], 
+    inputRange: [0, 100],
+    outputRange: [20, -80],
     extrapolate: 'clamp',
   });
 
@@ -57,8 +102,17 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     console.log('Search Query:', text);
   };
 
+  const handleSignOut = () => {
+    FIREBASE_AUTH.signOut()
+    navigation.navigate("/start")
+  }
+
+  const filteredDevices = devices.filter(device =>
+    device.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={styles.scrollContainer}
       onScroll={handleScroll}
       scrollEventThrottle={16}
@@ -78,11 +132,11 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {devices.map(device => (
-            <View key={device.id} style={[styles.card]}>
+          {filteredDevices.map(devices => (
+            <View key={devices.id} style={[styles.card, { width: cardWidth }]}>
               <View style={styles.imagePlaceholder} />
-              <Text style={styles.name}>{device.name}</Text>
-              <Text>Status: {device.status}</Text>
+              <Text style={styles.name}>{devices.name}</Text>
+              <Text>Status: {devices.status}</Text>
               <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
@@ -108,6 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     position: 'relative',
+    width: '100%', // or use flexGrow: 1
   },
   heading: {
     fontSize: 24,
@@ -115,9 +170,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   cardsContainer: {
-    flexDirection: 'row', 
-    flexWrap: 'wrap', 
-    justifyContent: 'space-around', 
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    width: '60%'
   },
   card: {
     backgroundColor: '#fff',
@@ -132,16 +188,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '45%', // Default width
-    marginHorizontal: '2.5%', // Default margin
-    alignItems: 'center', // Center content horizontally
+    alignItems: 'center',
   },
   imagePlaceholder: {
     width: 100,
     height: 100,
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: '#ccc', 
+    backgroundColor: '#ccc',
   },
   name: {
     fontWeight: 'bold',
@@ -175,19 +229,19 @@ const styles = StyleSheet.create({
     left: 40,
   },
   menuItem: {
-    flexDirection: 'row', // Align icon and text horizontally
-    alignItems: 'center', // Center items vertically
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 10,
   },
   searchBar: {
-    width: '50%',
+    width: '40%',
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 10, // Matching border radius with cards
+    borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 20,
   },
 });
 
