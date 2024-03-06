@@ -42,11 +42,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
     paddingHorizontal: 10,
-    width: '100%',
+    flex: 1,
     borderRadius: 5,
-    fontSize: 16,
   },
   button: {
     backgroundColor: '#007bff',
