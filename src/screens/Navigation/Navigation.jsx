@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Import AntDesign from @expo/vector-icons
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import styles from './navigationStyle'
 
 const NavBar = ({ navigation }) => {
   const handleMenuItemPress = (menuItem) => {
@@ -43,21 +44,6 @@ const NavBar = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  menuContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-    height: 60,
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderTopColor: 'lightgray',
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
+
 
 export default NavBar;

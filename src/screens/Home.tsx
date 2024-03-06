@@ -94,7 +94,7 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         <View style={styles.cardsContainer}>
           {filteredDevices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
-              <Image source={{ uri: device.imageUrl }} style={styles.deviceImage} /> 
+              <Image source={{ uri: device.imageUrl }} style={styles.deviceImage} /> {/* Image component */}
               <Text style={styles.name}>{device.name}</Text>
               <Text>Status: {device.status}</Text>
               <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
