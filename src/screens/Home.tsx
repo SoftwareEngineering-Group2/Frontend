@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeSyntheticEvent, Dimensions, Image } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { useAuthentication } from '../hooks/useAuth';
-import { getAllDevices } from '../api/deviceService';
+import { getAllDevices, getDeviceImage } from '../api/deviceService';
 
 interface Device {
   id: number;
   name: string;
   status: string;
+  imageUrl: string; // Added imageUrl property
 }
 
 const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const [devices, setDevices] = useState<Device[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -20,22 +22,24 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         const response = await getAllDevices();
         const apiDevices = response.allDevices;
 
-        const mappedDevices: Device[] =
-          apiDevices.map((apiDevice: { id: string; deviceName: string; deviceState: string }) => {
+        const mappedDevices: Device[] = apiDevices.map((apiDevice: { id: string; deviceName: string; deviceState: string }) => {
+          let status: string;
+          if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
+            status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
+          } else {
+            status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
+          }
 
-            let status: string;
-            if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
-              status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
-            } else {
-              status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
-            }
+          const imageUrl = getDeviceImage(apiDevice.deviceName); // Fetch the image URL
+          console.log('Image URL:', imageUrl);
 
-            return {
-              id: Number(apiDevice.id),
-              name: apiDevice.deviceName,
-              status: status,
-            };
-          });
+          return {
+            id: Number(apiDevice.id),
+            name: apiDevice.deviceName,
+            status: status,
+            imageUrl: imageUrl, // Assign the fetched image URL
+          };
+        });
 
         setDevices(mappedDevices);
       } catch (error) {
@@ -50,43 +54,23 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
   // Detect screen width
   const windowWidth = Dimensions.get('window').width;
-
-  // Calculate number of columns based on screen width
   const numColumns = windowWidth > 600 ? 2 : 1;
-
   const cardWidth = 1075 / numColumns;
-
-  const [showMenu, setShowMenu] = useState(false);
-  const [scrollY] = useState(new Animated.Value(0));
-  const [searchQuery, setSearchQuery] = useState('');
 
   const handleControlUnitPress = () => {
     // Functionality for controlling unit
     console.log('Control Unit pressed');
   };
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
-
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    scrollY.setValue(offsetY);
+    // Handle scroll event
   };
-
-  const menuTranslateY = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [20, -80],
-    extrapolate: 'clamp',
-  });
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
     // Perform search/filtering functionality here
     console.log('Search Query:', text);
   };
-
 
   const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -100,11 +84,6 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     >
       <View style={styles.container}>
         <Text>Welcome {user?.email}!</Text>
-        {/* <Animated.View style={[styles.menuButton, { transform: [{ translateY: menuTranslateY }] }]}>
-          <TouchableOpacity onPress={toggleMenu}>
-            <AntDesign name="menuunfold" size={24} color="black" />
-          </TouchableOpacity>
-        </Animated.View> */}
         <Text style={styles.heading}>Devices</Text>
         <TextInput
           style={[styles.searchBar]}
@@ -113,11 +92,11 @@ const Home = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {filteredDevices.map(devices => (
-            <View key={devices.id} style={[styles.card, { width: cardWidth }]}>
-              <View style={styles.imagePlaceholder} />
-              <Text style={styles.name}>{devices.name}</Text>
-              <Text>Status: {devices.status}</Text>
+          {filteredDevices.map(device => (
+            <View key={device.id} style={[styles.card, { width: cardWidth }]}>
+              <Image source={{ uri: device.imageUrl }} style={styles.deviceImage} /> 
+              <Text style={styles.name}>{device.name}</Text>
+              <Text>Status: {device.status}</Text>
               <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
@@ -171,12 +150,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     alignItems: 'center',
   },
-  imagePlaceholder: {
+  deviceImage: {
     width: 100,
     height: 100,
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: '#ccc',
   },
   name: {
     fontWeight: 'bold',
@@ -193,28 +171,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-  menuButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-  },
-  menuContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    elevation: 5,
-    zIndex: 1,
-    position: 'absolute',
-    top: 65,
-    left: 40,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
   searchBar: {
     width: '40%',
     height: 40,
@@ -225,21 +181,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
