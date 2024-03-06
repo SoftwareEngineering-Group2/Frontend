@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
-import { getAllDevices } from '../../api/deviceService';
+import { getAllDevices, getDeviceImage } from '../../api/deviceService';
 import styles from './HomeStyle'
 
 interface Device {
   id: number;
   name: string;
   status: string;
+  imageUrl: string;
 }
 
 const Home = () => {
@@ -20,22 +21,25 @@ const Home = () => {
         const response = await getAllDevices();
         const apiDevices = response.allDevices;
 
-        const mappedDevices: Device[] =
-          apiDevices.map((apiDevice: { id: string; deviceName: string; deviceState: string }) => {
-
+        const mappedDevices: Device[] = await Promise.all(
+          apiDevices.map(async (apiDevice: { id: string; deviceName: string; deviceState: string }) => {
             let status: string;
             if (apiDevice.deviceName === 'door' || apiDevice.deviceName === 'window') {
               status = apiDevice.deviceState === 'true' ? 'Open' : 'Closed';
             } else {
               status = apiDevice.deviceState === 'true' ? 'On' : 'Off';
             }
+            const imageUrl = await getDeviceImage(apiDevice.deviceName);
+
 
             return {
               id: Number(apiDevice.id),
               name: apiDevice.deviceName,
               status: status,
+              imageUrl: imageUrl,
             };
-          });
+          })
+        );
 
         setDevices(mappedDevices);
       } catch (error) {
@@ -108,11 +112,15 @@ const Home = () => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {filteredDevices.map(devices => (
-            <View key={devices.id} style={[styles.card, { width: cardWidth }]}>
-              <View style={styles.imagePlaceholder} />
-              <Text style={styles.name}>{devices.name}</Text>
-              <Text>Status: {devices.status}</Text>
+          {filteredDevices.map(device => (
+            <View key={device.id} style={[styles.card, { width: cardWidth }]}>
+          <Image
+            source={{ uri: device.imageUrl }}
+            style={[styles.image, { aspectRatio: 1 }]} // Add aspectRatio to maintain image aspect ratio
+            resizeMode='contain' // Change resizeMode to 'contain'
+          />
+              <Text style={styles.name}>{device.name}</Text>
+              <Text>Status: {device.status}</Text>
               <TouchableOpacity onPress={handleControlUnitPress} style={styles.controlUnitButton}>
                 <Text style={styles.controlUnitText}>Control Unit</Text>
               </TouchableOpacity>
@@ -125,23 +133,5 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
