@@ -45,12 +45,12 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             {deviceInfo && (
           <>
             <Text style={styles.modalText}>{deviceInfo.name}</Text>
-            <Text style={styles.modalText}>Status: {isEnabled ? "On" : "Off"}</Text>
+            <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
                 </>
               )}
               <Switch
-                trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                trackColor={{ false: '#767577', true: '#4c97ff' }}
+                thumbColor={isEnabled ? '#f5dd4b' : '#f44336'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={toggleSwitch}
                 value={isEnabled}
