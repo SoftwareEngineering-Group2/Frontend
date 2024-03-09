@@ -23,19 +23,19 @@ const NavBar = ({ navigation }) => {
   return (
     <View style={styles.menuContainer}>
       <TouchableOpacity onPress={() => handleMenuItemPress('Home')} style={styles.menuItem}>
-        <AntDesign name="home" size={24} color="black" />
-        <Text style={styles.homeText}>Home</Text>
+        <AntDesign name="home" size={24} color="#007bff" />
+        <Text>Home</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleMenuItemPress('Profile')} style={styles.menuItem}>
-        <AntDesign name="user" size={24} color="black" />
+        <AntDesign name="user" size={24} color="#007bff" />
         <Text>Profile</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => handleMenuItemPress('Settings')} style={styles.menuItem}>
-        <AntDesign name="setting" size={24} color="black" />
+        <AntDesign name="setting" size={24} color="#007bff" />
         <Text>Settings</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleSignOut} style={styles.menuItem}>
-        <AntDesign name="logout" size={24} color="black" /> 
+        <AntDesign name="logout" size={24} color="#007bff" /> 
         <Text>Sign Out</Text>
       </TouchableOpacity>
     </View>

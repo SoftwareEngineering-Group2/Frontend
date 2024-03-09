@@ -15,9 +15,10 @@ const styles = StyleSheet.create({
     width: '100%', // or use flexGrow: 1
   },
   heading: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop: 10,
   },
   cardsContainer: {
     flexDirection: 'row',
@@ -30,6 +31,8 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     borderRadius: 10,
+    borderWidth: 1, // Added border
+    borderColor: '#007bff', // Border color changed to blue
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
@@ -87,11 +90,12 @@ const styles = StyleSheet.create({
   searchBar: {
     width: '40%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#007bff', // Border color changed to blue
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 20,
+    fontStyle: 'italic', // Make the placeholder text italic
   },
   image: {
     width: '100%',
@@ -117,6 +121,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  welcomeText:{
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: '#007bff',
+    textTransform: 'capitalize',
+  }
 });
 
 export default styles;
