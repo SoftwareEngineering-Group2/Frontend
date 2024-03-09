@@ -16,7 +16,7 @@ export interface Device {
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
-
+  const [searchQuery, setSearchQuery] = useState('');
   useEffect(() => {
     const fetchDevices = async () => {
       try {
@@ -46,7 +46,7 @@ const Home = () => {
     };
 
     fetchDevices();
-  }, [devices]);
+  }, [searchQuery]);
 
   const { user } = useAuthentication();
 
@@ -60,7 +60,7 @@ const Home = () => {
 
   const [showMenu, setShowMenu] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
-  const [searchQuery, setSearchQuery] = useState('');
+  
   const [modalVisible, setModalVisible] = useState(false);
 
   const toggleModal = (device: Device) => {

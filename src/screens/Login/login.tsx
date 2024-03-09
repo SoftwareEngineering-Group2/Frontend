@@ -5,6 +5,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
 import styles from './loginStyle'
+import {Alert} from '../../components/Alert/Alert'
+import {variants} from '../../components/Alert/variants'
 
 const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   
@@ -40,6 +42,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
   async function signIn() {
     if (value.email === '' || value.password === '') {
+      setAlert({variants: 0, show: true})
       setValue({
         ...value,
         error: 'Email and password are mandatory.'
@@ -50,6 +53,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
+      setAlert({variants: 2, show: true});
     } catch (error) {
       setValue({
         ...value,
@@ -63,6 +67,8 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const handleCreateAccount = () => {
     navigation.navigate('signup');
   };
+
+  const [alert, setAlert] = useState({variants: 0, show: false});
 
   return (
     <View style={styles.container}>
@@ -111,10 +117,26 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           New user? <Text style={styles.signUpLinkText}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
+      {alert.show && (
+        <Alert 
+          variant={variants[alert.variants]} 
+        />
+      )}
     </View> 
   );
 }
 
 export default Login;
 
+/* let alertCounter = 0;
+
+function setAlert(type: number) {
+  const key = `alert-${alertCounter++}`
+  ReactDOM.render(
+    <Alert key={key} variant={variants[type]} visible={alert.show} 
+    onClose={handleAlertClose} />,
+    document.getElementById('addDiscMessage')
+  );
+}
+ */
 
