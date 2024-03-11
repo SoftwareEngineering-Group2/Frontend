@@ -24,10 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2, },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     width: '100%',
@@ -72,6 +69,15 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  text: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  shadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
 });
 

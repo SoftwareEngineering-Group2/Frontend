@@ -73,15 +73,15 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={[styles.welcomeText, { textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5 }]}>
-          {greeting}
-        </Text>
-        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
-          &amp;
-        </Text>
-        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
-          Welcome back
-        </Text>
+      <Text style={[styles.welcomeText, styles.shadow]}>
+        {greeting}
+      </Text>
+      <Text style={[styles.text, styles.shadow]}>
+        &amp;
+      </Text>
+      <Text style={[styles.text, styles.shadow]}>
+        Welcome back
+      </Text>
       </View>
       <View style={styles.card}>
         <View style={styles.inputContainer}>
@@ -127,16 +127,4 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 }
 
 export default Login;
-
-/* let alertCounter = 0;
-
-function setAlert(type: number) {
-  const key = `alert-${alertCounter++}`
-  ReactDOM.render(
-    <Alert key={key} variant={variants[type]} visible={alert.show} 
-    onClose={handleAlertClose} />,
-    document.getElementById('addDiscMessage')
-  );
-}
- */
 
