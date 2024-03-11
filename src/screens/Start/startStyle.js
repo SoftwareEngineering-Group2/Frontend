@@ -7,24 +7,17 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 80,
   },
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: windowWidth > 768 ? 20 : 0, // Add horizontal padding only for larger screens
+    /* paddingHorizontal: windowWidth > 768 ? 20 : 0,  */// Add horizontal padding only for larger screens
   },
   backgroundImage: {
-    width: '100%',
-    height: '100%',
-  },
-  overlay: {
-    position: 'absolute',
-    bottom: 40, // Add more bottom margin for spacing
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    marginBottom: 40, // Add spacing between picture and text
+    width: windowWidth > 768 ? 550 : 200,
+    height: windowHeight > 768 ? 550 : 200, 
   },
   overlayTextMain: {
     fontSize: windowWidth > 768 ? 48 : 36, // Adjust font size based on screen width
@@ -56,6 +49,12 @@ const styles = StyleSheet.create({
     marginBottom: 40, // Increase bottom margin for more spacing
     fontSize: windowWidth > 768 ? 24 : 18, // Adjust font size based on screen width
     textAlign: 'center',
+  },
+  buttons:{
+    flexDirection: windowWidth > 768 ? 'row': 'column',
+    justifyContent: 'center', // Center the buttons horizontally
+    gap: windowWidth  > 768 ? 100 : 0,
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#007bff', // Change button color
