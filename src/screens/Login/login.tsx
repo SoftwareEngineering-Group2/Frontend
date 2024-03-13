@@ -5,6 +5,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
 import styles from './loginStyle'
+import {Alert} from '../../components/Alert/Alert'
+import {variants} from '../../components/Alert/variants'
 
 const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   
@@ -40,6 +42,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
   async function signIn() {
     if (value.email === '' || value.password === '') {
+      setAlert({variants: 0, show: true})
       setValue({
         ...value,
         error: 'Email and password are mandatory.'
@@ -50,6 +53,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
+      setAlert({variants: 2, show: true});
     } catch (error) {
       setValue({
         ...value,
@@ -64,18 +68,20 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     navigation.navigate('signup');
   };
 
+  const [alert, setAlert] = useState({variants: 0, show: false});
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={[styles.welcomeText, { textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5 }]}>
-          {greeting}
-        </Text>
-        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
-          &amp;
-        </Text>
-        <Text style={{ fontSize: 24, textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 2, height: 2 }, textShadowRadius: 5, marginBottom: 10 }}>
-          Welcome back
-        </Text>
+      <Text style={[styles.welcomeText, styles.shadow]}>
+        {greeting}
+      </Text>
+      <Text style={[styles.text, styles.shadow]}>
+        &amp;
+      </Text>
+      <Text style={[styles.text, styles.shadow]}>
+        Welcome back
+      </Text>
       </View>
       <View style={styles.card}>
         <View style={styles.inputContainer}>
@@ -111,10 +117,14 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           New user? <Text style={styles.signUpLinkText}>Sign Up</Text>
         </Text>
       </TouchableOpacity>
+      {alert.show && (
+        <Alert 
+          variant={variants[alert.variants]} 
+        />
+      )}
     </View> 
   );
 }
 
 export default Login;
-
 
