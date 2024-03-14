@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
+    alignItems: "center",
   },
   descriptionText: {
     fontSize: 16,
