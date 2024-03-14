@@ -12,9 +12,10 @@ const styles = StyleSheet.create({
     borderTopColor: 'lightgray',
   },
   menuItem: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
+ 
 });
 
 export default styles;
