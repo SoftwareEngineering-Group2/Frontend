@@ -65,7 +65,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   }
 
   const handleCreateAccount = () => {
-    navigation.navigate('signup');
+    navigation.navigate('Signup');
   };
 
   const [alert, setAlert] = useState({variants: 0, show: false});

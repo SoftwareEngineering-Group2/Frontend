@@ -10,10 +10,10 @@ export const Alert = ({ variant }) => {
   useEffect(() => {
     setOpen(true);
 
-    if (variant.title === "Success") {
+    if (variant.title === "Success" || variant.title === "Error") {
       const timeoutId = setTimeout(() => {
         setOpen(false);
-      }, 2000);
+      }, 5000);
 
       // Clean up the timeout if the component unmounts before 3000 milliseconds
       return () => clearTimeout(timeoutId);
@@ -35,9 +35,9 @@ export const Alert = ({ variant }) => {
           <Text style={styles.descriptionTitle}>{variant.title}:</Text>
           <Text style={styles.descriptionText}>{variant.text}</Text>
         </View>
-        <TouchableOpacity onPress={() => setOpen(false)} style={styles.symbolCloseLink}>
+        {/* <TouchableOpacity onPress={() => setOpen(false)} style={styles.symbolCloseLink}>
           <Text style={styles.materialSymbolsOutlined}>close</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     )
   );

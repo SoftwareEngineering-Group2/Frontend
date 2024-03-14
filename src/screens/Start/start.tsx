@@ -10,12 +10,12 @@ const Start = ({ navigation }: { navigation: NavigationProp<any, any> })=>{
 
   // Function to handle navigation to the login page
   const handleLoginPress = () => {
-    navigation.navigate('login');
+    navigation.navigate('Login');
   };
 
   // Function to handle navigation to the sign up page
   const handleCreateAccount = () => {
-    navigation.navigate('signup');
+    navigation.navigate('Signup');
   };
 
   // Return the JSX layout

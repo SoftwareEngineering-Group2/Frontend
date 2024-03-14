@@ -30,7 +30,7 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
     try {
       await createUserWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
-      navigation.navigate('login');
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Error signing up:', error);
       // Handle error
@@ -38,7 +38,7 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   }
 
   const handleLoginPress = () => {
-    navigation.navigate('login');
+    navigation.navigate('Login');
   };
 
   return (

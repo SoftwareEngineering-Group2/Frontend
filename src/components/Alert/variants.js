@@ -1,9 +1,11 @@
+import { Ionicons } from '@expo/vector-icons'; 
+
 export const variants = [
   //red
   {
     mainColor: "#FDEDED",
     secondaryColor: "#F16360",
-    symbol: "error",
+    symbol: <Ionicons name="alert" size={24} color="black" />,
     title: "Error",
     text: "Ett fel uppstod, försök igen",
   },
