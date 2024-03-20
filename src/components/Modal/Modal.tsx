@@ -27,6 +27,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
           // Call API to update device state
           const newState = { state: !isEnabled }; // Toggle the state correctly
           await updateDeviceState(deviceInfo?.name, newState);
+          //callback
         } catch (error) {
           console.error('Error updating device state:', error);
           // Handle error states here
