@@ -50,6 +50,69 @@ export const getAllDevices = async () => {
   }
 };
 
+export const updateCoffeeMachine = async (
+  deviceState: boolean,
+  coffeeType: string
+) => {
+  try {
+    const deviceStateString = String(deviceState);
+
+    // Update the coffeeMachine state
+    const stateResponse = await httpClient.post(`/device/coffeeMachine/deviceState`, {
+      newInformation: deviceStateString
+    });
+
+    // Update the coffee type e.g. Latte, Espresso, Americano
+    const coffeeTypeResponse = await httpClient.post(`/device/coffeeMachine/coffeeType`, {
+      newInformation: coffeeType
+    });
+
+    return {
+      stateUpdateResponse: stateResponse.data,
+      coffeeTypeUpdateResponse: coffeeTypeResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+export const updateMicrowaveOven = async (
+  deviceState: boolean,
+  ovenMode: string,
+  ovenTimer: number
+) => {
+  try {
+    const deviceStateString = String(deviceState);
+
+    // Update the microwaveoven state
+    const stateResponse = await httpClient.post(`/device/microOven/deviceState`, {
+      newInformation: deviceStateString
+    });
+
+    // Update the ovenMode e.g. Defrost, 700w, 1000w
+    const modeResponse = await httpClient.post(`/device/microOven/ovenMode`, {
+      newInformation: ovenMode
+    });
+
+    // Update the timer e.g 1, 2, 3
+    const timerResponse = await httpClient.post(`/device/microOven/ovenTimer`, {
+      newInformation: ovenTimer
+    });
+
+    return {
+      stateUpdateResponse: stateResponse.data,
+      ovenModeUpdateResponse: modeResponse.data,
+      ovenTimerUpdateResponse: timerResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
 const handleApiError = (error: any) => {
   if (error.response) {
     // The request was made and the server responded with a status code

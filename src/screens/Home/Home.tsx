@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
 import { NativeScrollEvent } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
-import { getAllDevices, getDeviceImage } from '../../api/deviceService';
+import { getAllDevices, getDeviceImage, updateCoffeeMachine, updateMicrowaveOven } from '../../api/deviceService';
 import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
 
@@ -13,7 +13,43 @@ export interface Device {
   imageUrl: string;
 }
 
+
+// Calling the updateCoffeeMachine function
+updateCoffeeMachine(false, "asdasd")
+  .then(response => {
+    console.log("Update response:", response);
+  })
+  .catch(error => {
+    console.error("Error updating coffee machine:", error);
+  });
+
+updateMicrowaveOven(false, "700asdasdw", 3)
+  .then(response => {
+    console.log('Microwave Oven update successful:', response);
+  })
+  .catch(error => {
+    console.error('Error updating Microwave Oven:', error);
+  });
+
 const Home = () => {
+
+  // Calling the updateCoffeeMachine function
+  updateCoffeeMachine(false, "Espresso")
+    .then(response => {
+      console.log("Update response:", response);
+    })
+    .catch(error => {
+      console.error("Error updating coffee machine:", error);
+    });
+
+  updateMicrowaveOven(false, "700w", 3)
+    .then(response => {
+      console.log('Microwave Oven update successful:', response);
+    })
+    .catch(error => {
+      console.error('Error updating Microwave Oven:', error);
+    });
+
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
@@ -101,7 +137,7 @@ const Home = () => {
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
+        <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
         <Text style={styles.heading}>Connected Devices</Text>
         <TextInput
           style={[styles.searchBar]}
@@ -112,32 +148,32 @@ const Home = () => {
         <View style={styles.cardsContainer}>
           {filteredDevices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
-        <Image
-          source={{ uri: device.imageUrl }}
-          style={[styles.image, { aspectRatio: 1 }]}
-          resizeMode='contain'
-        />
-        <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{device.name}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ marginRight: 5,fontSize:18 }}>Status:</Text>
-          {device.status ? (
-            <Text style={{ color: 'green', fontWeight: 'bold',fontSize:18 }}>On</Text>
-          ) : (
-            <Text style={{ color: 'red', fontWeight: 'bold',fontSize:18 }}>Off</Text>
-          )}
-        </View>
-        <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
-          <Text style={styles.controlUnitText}>Control Unit</Text>
-        </TouchableOpacity>
-      </View>
+              <Image
+                source={{ uri: device.imageUrl }}
+                style={[styles.image, { aspectRatio: 1 }]}
+                resizeMode='contain'
+              />
+              <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{device.name}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 5, fontSize: 18 }}>Status:</Text>
+                {device.status ? (
+                  <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18 }}>On</Text>
+                ) : (
+                  <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 18 }}>Off</Text>
+                )}
+              </View>
+              <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
+                <Text style={styles.controlUnitText}>Control Unit</Text>
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
         {selectedDevice && (
           <Modal
-          modalVisible={modalVisible}
-          toggleModal={() => setModalVisible(!modalVisible)}
-          deviceInfo={selectedDevice}
-        />
+            modalVisible={modalVisible}
+            toggleModal={() => setModalVisible(!modalVisible)}
+            deviceInfo={selectedDevice}
+          />
         )}
       </View>
     </ScrollView>
