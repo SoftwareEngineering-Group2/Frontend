@@ -13,43 +13,7 @@ export interface Device {
   imageUrl: string;
 }
 
-
-// Calling the updateCoffeeMachine function
-updateCoffeeMachine(false, "asdasd")
-  .then(response => {
-    console.log("Update response:", response);
-  })
-  .catch(error => {
-    console.error("Error updating coffee machine:", error);
-  });
-
-updateMicrowaveOven(false, "700asdasdw", 3)
-  .then(response => {
-    console.log('Microwave Oven update successful:', response);
-  })
-  .catch(error => {
-    console.error('Error updating Microwave Oven:', error);
-  });
-
 const Home = () => {
-
-  // Calling the updateCoffeeMachine function
-  updateCoffeeMachine(false, "Espresso")
-    .then(response => {
-      console.log("Update response:", response);
-    })
-    .catch(error => {
-      console.error("Error updating coffee machine:", error);
-    });
-
-  updateMicrowaveOven(false, "700w", 3)
-    .then(response => {
-      console.log('Microwave Oven update successful:', response);
-    })
-    .catch(error => {
-      console.error('Error updating Microwave Oven:', error);
-    });
-
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
