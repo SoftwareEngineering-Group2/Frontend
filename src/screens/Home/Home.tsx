@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
 import { getAllDevices, getDeviceImage } from '../../api/deviceService';
+import { Platform } from 'react-native';
 import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
+import Speech from '../../components/SpeechToText/Speech';
+import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
+import { updateDeviceState } from '../../api/deviceService';
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
   const [modalVisible, setModalVisible] = useState(false);
+  const [spokenText, setSpokenText] = useState('');
 
   const toggleModal = async (device: Device) => {
     setSelectedDevice(device);
@@ -18,9 +22,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-  
+
     fetchDevices(setDevices);
-  }, [modalVisible]);
+    console.log(devices)
+  }, [modalVisible, spokenText]);
 
   const { user } = useAuthentication();
 
@@ -43,14 +48,42 @@ const Home = () => {
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Function to handle the spoken text
+  const handleSpokenText = async (text: string) => {
+    console.log("Spoken Text:", text);
+    
+    // Check if the spoken text matches the command to turn on the white LED
+    if (text === "turn on white LED") { 
+
+      const newState = { state: true };
+      setSpokenText(text);
+
+      // Update the device state in the backend
+      await updateDeviceState("whiteLed", newState);
+      
+    }
+  };
+
+  // Function to render either Speech component or another component based on platform
+  const renderDynamicComponent = () => {
+    if (Platform.OS === 'web') {
+      // Render the alternative component for web
+      return <SpeechWeb />;
+    } else {
+      // Render the Speech component for mobile platforms
+      return <Speech spokenText={handleSpokenText}/>;
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
+        <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
         <Text style={styles.heading}>Connected Devices</Text>
+        {renderDynamicComponent()}
         <TextInput
           style={[styles.searchBar]}
           placeholder="Search Devices"
@@ -60,32 +93,32 @@ const Home = () => {
         <View style={styles.cardsContainer}>
           {filteredDevices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
-        <Image
-          source={{ uri: device.imageUrl }}
-          style={[styles.image, { aspectRatio: 1 }]}
-          resizeMode='contain'
-        />
-        <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{device.name}</Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ marginRight: 5,fontSize:18 }}>Status:</Text>
-          {device.status ? (
-            <Text style={{ color: 'green', fontWeight: 'bold',fontSize:18 }}>On</Text>
-          ) : (
-            <Text style={{ color: 'red', fontWeight: 'bold',fontSize:18 }}>Off</Text>
-          )}
-        </View>
-        <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
-          <Text style={styles.controlUnitText}>Control Unit</Text>
-        </TouchableOpacity>
-      </View>
+              <Image
+                source={{ uri: device.imageUrl }}
+                style={[styles.image, { aspectRatio: 1 }]}
+                resizeMode='contain'
+              />
+              <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{device.name}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ marginRight: 5, fontSize: 18 }}>Status:</Text>
+                {device.status ? (
+                  <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 18 }}>On</Text>
+                ) : (
+                  <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 18 }}>Off</Text>
+                )}
+              </View>
+              <TouchableOpacity onPress={() => toggleModal(device)} style={styles.controlUnitButton}>
+                <Text style={styles.controlUnitText}>Control Unit</Text>
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
         {selectedDevice && (
           <Modal
-          modalVisible={modalVisible}
-          toggleModal={() => setModalVisible(!modalVisible)}
-          deviceInfo={selectedDevice} 
-        />
+            modalVisible={modalVisible}
+            toggleModal={() => setModalVisible(!modalVisible)}
+            deviceInfo={selectedDevice}
+          />
         )}
       </View>
     </ScrollView>
