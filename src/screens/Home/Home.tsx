@@ -7,7 +7,7 @@ import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
 import Speech from '../../components/SpeechToText/Speech';
 import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
-import { updateDeviceState } from '../../api/deviceService';
+import handleSpeech from './handleSpeech';
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -22,10 +22,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-
-    fetchDevices(setDevices);
-    console.log(devices)
-  }, [modalVisible, spokenText]);
+    const fetchData = async () => {
+      await fetchDevices(setDevices);
+      console.log(devices);
+      // Call handleSpeech after devices are fetched
+      /* handleSpokenText(spokenText);  */// Assuming spokenText is available in scope
+    };
+  
+    fetchData(); // Call the function to fetch data and handle speech
+  }, [modalVisible, spokenText])
 
   const { user } = useAuthentication();
 
@@ -43,32 +48,22 @@ const Home = () => {
     console.log('Search Query:', text);
   };
 
-
   const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Function to handle the spoken text
   const handleSpokenText = async (text: string) => {
-    console.log("Spoken Text:", text);
-    
-    // Check if the spoken text matches the command to turn on the white LED
-    if (text === "turn on white LED") { 
 
-      const newState = { state: true };
-      setSpokenText(text);
-
-      // Update the device state in the backend
-      await updateDeviceState("whiteLed", newState);
-      
-    }
+    await handleSpeech(text, setSpokenText)
+    setSpokenText(text);
   };
 
   // Function to render either Speech component or another component based on platform
   const renderDynamicComponent = () => {
     if (Platform.OS === 'web') {
       // Render the alternative component for web
-      return <SpeechWeb />;
+      return <SpeechWeb spokenText={handleSpokenText}/>;
     } else {
       // Render the Speech component for mobile platforms
       return <Speech spokenText={handleSpokenText}/>;

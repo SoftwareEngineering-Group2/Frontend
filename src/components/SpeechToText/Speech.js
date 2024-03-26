@@ -44,8 +44,8 @@ export default function Speech({ spokenText }) {
 
   return (
     <View style={styles.container}>
-      {!started ? <Button title='Start Speech to Text' onPress={startSpeechToText} /> : undefined}
-      {started ? <Button title='Stop Speech to Text' onPress={stopSpeechToText} /> : undefined}
+      {!started ? <Button title='Start listening' onPress={startSpeechToText} /> : undefined}
+      {started ? <Button title='Stop listening' onPress={stopSpeechToText} /> : undefined}
     </View>
   );
 }

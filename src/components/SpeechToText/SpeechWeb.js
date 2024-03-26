@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, Text } from 'react-native';
 
-const SpeechToText = () => {
+const SpeechToText = ({ spokenText }) => {
   const [recognizedText, setRecognizedText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const recognition = new webkitSpeechRecognition();
@@ -9,6 +9,10 @@ const SpeechToText = () => {
   recognition.onresult = function(event) {
     const transcript = event.results[0][0].transcript;
     setRecognizedText(transcript);
+    if(spokenText){
+      spokenText(recognizedText)
+    }
+    
   };
 
   const startListening = () => {
@@ -27,7 +31,7 @@ const SpeechToText = () => {
         title={isListening ? 'Stop Listening' : 'Start Listening'}
         onPress={isListening ? stopListening : startListening}
       />
-      <Text style={{ marginTop: 20 }}>Recognized Text: {recognizedText}</Text>
+      {/* <Text style={{ marginTop: 20 }}>Recognized Text: {recognizedText}</Text> */}
     </View>
   );
 };
