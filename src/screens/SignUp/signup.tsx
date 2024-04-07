@@ -3,28 +3,27 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from Expo
-import styles from './signUpStyle'
+import { Ionicons } from '@expo/vector-icons';
+import styles from './signUpStyle';
 
 const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const [value, setValue] = useState({
     email: '',
     password: '',
     confirmPassword: '',
-    error: ''
+    firstName: '',
+    lastName: '',
+    error: '' 
   });
 
   async function signUp() {
     if (value.password !== value.confirmPassword) {
-      alert("Passwords do not match!");
+      setValue({ ...value, error: "Passwords do not match!" });
       return;
     }
 
-    if (value.email === '' || value.password === '') {
-      setValue({
-        ...value,
-        error: 'Email and password are mandatory.'
-      });
+    if (value.email === '' || value.password === '' || value.firstName === '' || value.lastName === '') {
+      setValue({ ...value, error: 'All fields are mandatory.' });
       return;
     }
 
@@ -33,7 +32,8 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error signing up:', error);
-      // Handle error
+      const errorMessage = (error as Error).message;
+      setValue({ ...value, error: errorMessage });
     }
   }
 
@@ -45,10 +45,29 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <View style={styles.card}>
+        {value.error ? <Text style={styles.errorMessage}>{value.error}</Text> : null}
+        <View style={styles.inputContainer}>
+          <Ionicons name="person" size={24} color="#007bff" style={styles.icon} />
+          <TextInput
+            style={[styles.input, styles.inputText]}
+            placeholder="First Name"
+            value={value.firstName}
+            onChangeText={(text) => setValue({ ...value, firstName: text })}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="person" size={24} color="#007bff" style={styles.icon} />
+          <TextInput
+            style={[styles.input, styles.inputText]}
+            placeholder="Last Name"
+            value={value.lastName}
+            onChangeText={(text) => setValue({ ...value, lastName: text })}
+          />
+        </View>
         <View style={styles.inputContainer}>
           <Ionicons name="mail" size={24} color="#007bff" style={styles.icon} />
           <TextInput
-            style={[styles.input, styles.inputText]} // Added styles.inputText
+            style={[styles.input, styles.inputText]}
             placeholder="Email"
             keyboardType="email-address"
             value={value.email}
@@ -58,7 +77,7 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         <View style={styles.inputContainer}>
           <Ionicons name="lock-closed" size={24} color="#007bff" style={styles.icon} />
           <TextInput
-            style={[styles.input, styles.inputText]} // Added styles.inputText
+            style={[styles.input, styles.inputText]}
             placeholder="Password"
             secureTextEntry={true}
             value={value.password}
@@ -68,7 +87,7 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         <View style={styles.inputContainer}>
           <Ionicons name="lock-closed" size={24} color="#007bff" style={styles.icon} />
           <TextInput
-            style={[styles.input, styles.inputText]} // Added styles.inputText
+            style={[styles.input, styles.inputText]}
             placeholder="Confirm Password"
             secureTextEntry={true}
             value={value.confirmPassword}
@@ -80,14 +99,12 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={handleLoginPress}>
-        <Text style={[styles.signUpText, {fontSize: 18}]}> {/* Increased font size */}
+        <Text style={[styles.signUpText, {fontSize: 18}]}>
           Already have an account? <Text style={styles.signUpLinkText}>Log in</Text>
         </Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-
 
 export default SignUp;
