@@ -8,6 +8,7 @@ import Modal from '../../components/Modal/Modal';
 import Speech from '../../components/SpeechToText/Speech';
 import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
 import handleSpeech from './handleSpeech';
+import httpClient from '@/src/api/httpClient';
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);

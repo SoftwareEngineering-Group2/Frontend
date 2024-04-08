@@ -22,7 +22,8 @@ export const updateDeviceState = async (deviceType: string | undefined, newState
 
 export const getDeviceImage = async (deviceType: string) => {
   try {
-    const response = await httpClient.get(`/device/${deviceType}/image`);
+    const response = await httpClient.get(`/device/${deviceType}/image`, {
+    });
     return response.data.imageUrl;
   } catch (error) {
     handleApiError(error);
@@ -49,6 +50,16 @@ export const getAllDevices = async () => {
     throw error;
   }
 };
+/* 
+export const sendToken = async () =>{
+  try{
+    const response = await httpClient.get(`/device/${deviceType}/image`);
+
+  }catch(error) {
+    handleApiError(error);
+    throw error;
+  }
+} */
 
 const handleApiError = (error: any) => {
   if (error.response) {
