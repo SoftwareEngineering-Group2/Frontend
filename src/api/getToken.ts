@@ -1,7 +1,5 @@
 import { useAuthentication } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
-
 
 export const useToken = () => {
   const { user } = useAuthentication();

@@ -8,7 +8,8 @@ import Modal from '../../components/Modal/Modal';
 import Speech from '../../components/SpeechToText/Speech';
 import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
 import handleSpeech from './handleSpeech';
-import httpClient from '@/src/api/httpClient';
+import { useToken } from '../../api/getToken';
+import httpClient from "../../api/httpClient";
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -16,6 +17,13 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [spokenText, setSpokenText] = useState('');
+  const token = useToken();
+
+  useEffect(() => {
+    if (token) {
+      httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]); 
 
   const toggleModal = async (device: Device) => {
     setSelectedDevice(device);
@@ -23,15 +31,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchDevices(setDevices);
-      console.log(devices);
-      // Call handleSpeech after devices are fetched
-      /* handleSpokenText(spokenText);  */// Assuming spokenText is available in scope
-    };
-  
-    fetchData(); // Call the function to fetch data and handle speech
-  }, [modalVisible, spokenText])
+    if(token){
+      const fetchData = async () => {
+        await fetchDevices(setDevices);
+      };
+    
+      fetchData();
+    }
+     // Call the function to fetch data and handle speech
+  }, [modalVisible, spokenText, token])
 
   const { user } = useAuthentication();
 

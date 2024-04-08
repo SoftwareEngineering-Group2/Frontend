@@ -50,16 +50,6 @@ export const getAllDevices = async () => {
     throw error;
   }
 };
-/* 
-export const sendToken = async () =>{
-  try{
-    const response = await httpClient.get(`/device/${deviceType}/image`);
-
-  }catch(error) {
-    handleApiError(error);
-    throw error;
-  }
-} */
 
 const handleApiError = (error: any) => {
   if (error.response) {
