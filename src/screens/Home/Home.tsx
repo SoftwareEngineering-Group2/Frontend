@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
+import { Platform } from 'react-native';
 import { getAllDevices, getDeviceImage, updateCoffeeMachine, updateMicrowaveOven } from '../../api/deviceService';
 import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
+import Speech from '../../components/SpeechToText/Speech';
+import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
+import handleSpeech from './handleSpeech';
+import { useToken } from '../../api/getToken';
+import httpClient from "../../api/httpClient";
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
   const [modalVisible, setModalVisible] = useState(false);
+  const [spokenText, setSpokenText] = useState('');
+  const token = useToken();
+
+  useEffect(() => {
+    if (token) {
+      httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]); 
 
   const toggleModal = async (device: Device) => {
     setSelectedDevice(device);
@@ -18,9 +31,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-  
-    fetchDevices(setDevices);
-  }, [modalVisible]);
+    if(token){
+      const fetchData = async () => {
+        await fetchDevices(setDevices);
+      };
+    
+      fetchData();
+    }
+     // Call the function to fetch data and handle speech
+  }, [modalVisible, spokenText, token])
 
   const { user } = useAuthentication();
 
@@ -38,10 +57,27 @@ const Home = () => {
     console.log('Search Query:', text);
   };
 
-
   const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Function to handle the spoken text
+  const handleSpokenText = async (text: string) => {
+
+    await handleSpeech(text, setSpokenText)
+    setSpokenText(text);
+  };
+
+  // Function to render either Speech component or another component based on platform
+  const renderDynamicComponent = () => {
+    if (Platform.OS === 'web') {
+      // Render the alternative component for web
+      return <SpeechWeb spokenText={handleSpokenText}/>;
+    } else {
+      // Render the Speech component for mobile platforms
+      return <Speech spokenText={handleSpokenText}/>;
+    }
+  };
 
   return (
     <ScrollView
@@ -51,6 +87,7 @@ const Home = () => {
       <View style={styles.container}>
         <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
         <Text style={styles.heading}>Connected Devices</Text>
+        {renderDynamicComponent()}
         <TextInput
           style={[styles.searchBar]}
           placeholder="Search Devices"

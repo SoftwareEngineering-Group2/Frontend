@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { useAuthentication } from '../hooks/useAuth';
+import React, { useEffect, useState } from 'react';
 import UserStack from './userStack';
 import AuthStack from './authStack';
+import { useAuthentication } from '../hooks/useAuth';
 
 export default function RootNavigation() {
   const { user } = useAuthentication();
   
-  /* console.log(user) */
-
   return user ? <UserStack /> : <AuthStack />;
 }

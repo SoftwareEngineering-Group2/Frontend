@@ -22,7 +22,8 @@ export const updateDeviceState = async (deviceType: string | undefined, newState
 
 export const getDeviceImage = async (deviceType: string) => {
   try {
-    const response = await httpClient.get(`/device/${deviceType}/image`);
+    const response = await httpClient.get(`/device/${deviceType}/image`, {
+    });
     return response.data.imageUrl;
   } catch (error) {
     handleApiError(error);
