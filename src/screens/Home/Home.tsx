@@ -10,6 +10,7 @@ import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
 import handleSpeech from './handleSpeech';
 import { useToken } from '../../api/getToken';
 import httpClient from "../../api/httpClient";
+import {useSocket} from '../../api/useSocket'
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -18,6 +19,8 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [spokenText, setSpokenText] = useState('');
   const token = useToken();
+  const { user } = useAuthentication();
+  const allDevices = useSocket();
 
   useEffect(() => {
     if (token) {
@@ -31,7 +34,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if(token){
+    if(token || allDevices){
       const fetchData = async () => {
         await fetchDevices(setDevices);
       };
@@ -39,9 +42,7 @@ const Home = () => {
       fetchData();
     }
      // Call the function to fetch data and handle speech
-  }, [modalVisible, spokenText, token])
-
-  const { user } = useAuthentication();
+  }, [modalVisible, spokenText, token, allDevices])
 
   // Detect screen width
   const windowWidth = Dimensions.get('window').width;
@@ -57,9 +58,9 @@ const Home = () => {
     console.log('Search Query:', text);
   };
 
-  const filteredDevices = devices.filter(device =>
+  /* const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ); */
 
   // Function to handle the spoken text
   const handleSpokenText = async (text: string) => {
@@ -95,7 +96,7 @@ const Home = () => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {filteredDevices.map(device => (
+          {devices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
               <Image
                 source={{ uri: device.imageUrl }}
