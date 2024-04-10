@@ -79,6 +79,13 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },
+  errorMessage: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
+  }
 });
 
 export default styles;
