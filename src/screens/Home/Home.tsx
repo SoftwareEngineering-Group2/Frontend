@@ -58,9 +58,9 @@ const Home = () => {
     console.log('Search Query:', text);
   };
 
-  /* const filteredDevices = devices.filter(device =>
+  const filteredDevices = devices.filter(device =>
     device.name.toLowerCase().includes(searchQuery.toLowerCase())
-  ); */
+  );
 
   // Function to handle the spoken text
   const handleSpokenText = async (text: string) => {
@@ -96,7 +96,7 @@ const Home = () => {
           onChangeText={handleSearch}
         />
         <View style={styles.cardsContainer}>
-          {devices.map(device => (
+          {filteredDevices.map(device => (
             <View key={device.id} style={[styles.card, { width: cardWidth }]}>
               <Image
                 source={{ uri: device.imageUrl }}
