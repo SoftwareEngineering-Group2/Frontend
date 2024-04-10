@@ -10,6 +10,7 @@ import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
 import handleSpeech from './handleSpeech';
 import { useToken } from '../../api/getToken';
 import httpClient from "../../api/httpClient";
+import {useSocket} from '../../api/useSocket'
 import { getUsername } from '@/src/api/deviceService';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 
@@ -20,7 +21,9 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [spokenText, setSpokenText] = useState('');
   const token = useToken();
-  
+  const { user } = useAuthentication();
+  const allDevices = useSocket();
+  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
     if (token) {
@@ -35,7 +38,7 @@ const Home = () => {
 
   
   useEffect(() => {
-    if(token){
+    if(token || allDevices){
       const fetchData = async () => {
         await fetchDevices(setDevices);
       };
@@ -43,10 +46,9 @@ const Home = () => {
       fetchData();
     }
 
-  }, [modalVisible, spokenText, token])
+     // Call the function to fetch data and handle speech
+  }, [modalVisible, spokenText, token, allDevices])
 
-  const { user } = useAuthentication();
-  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -66,7 +68,6 @@ const Home = () => {
 
     fetchData();
   }, []);
-
 
 
   const windowWidth = Dimensions.get('window').width;
