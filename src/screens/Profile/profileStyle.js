@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '100%',
+    width: '60%',
     marginBottom: 20,
     alignItems: 'flex-start',
   },

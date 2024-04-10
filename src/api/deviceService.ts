@@ -20,6 +20,28 @@ export const updateDeviceState = async (deviceType: string | undefined, newState
   }
 };
 
+export const updateUsernames = async (uid : string, firstName : string, lastName : string) => {
+  try {
+    const response = await httpClient.post(`/user/${uid}`, {
+      firstName: firstName,
+      lastName: lastName
+    });
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+export const getUsername = async (uid : string) => {
+  try {
+    const response = await httpClient.get(`/user/${uid}`, {
+    });
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
 export const getDeviceImage = async (deviceType: string) => {
   try {
     const response = await httpClient.get(`/device/${deviceType}/image`, {

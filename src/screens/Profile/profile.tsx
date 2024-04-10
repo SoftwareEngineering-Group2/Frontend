@@ -1,10 +1,48 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image} from 'react-native';
 import styles from './profileStyle';
 import { useAuthentication } from '../../hooks/useAuth';
+import { useToken } from '../../api/getToken';
+import httpClient from "../../api/httpClient";
+import { getUsername } from '@/src/api/deviceService';
+import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+
+
 
 const Profile = () => {
   const { user } = useAuthentication();
+  const token = useToken();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
+  useEffect(() => {
+    if (token) {
+      httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]); 
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const user = FIREBASE_AUTH.currentUser;
+        if (user) {
+          const uid = user.uid;
+          const response = await getUsername(uid);
+          setFirstName(response.firstName);
+          setLastName(response.lastName);
+        } else {
+          console.error('User is not authenticated.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []); 
+
+
+
 
   const formattedRegistrationDate = user?.metadata.creationTime
     ? new Date(user.metadata.creationTime).toLocaleDateString('en-GB', {
@@ -24,7 +62,7 @@ const Profile = () => {
       })
     : 'Unknown';
 
-  const fullNamePlaceholder = 'Name Not Set';
+
   console.log(user)
   return (
     <View style={styles.container}>
@@ -32,7 +70,7 @@ const Profile = () => {
         <Text style={styles.heading}>Profile</Text>
         <View style={styles.profileInfo}>
           <Text style={styles.label}>Name:</Text>
-          <Text style={styles.profileDetailText}>{user?.displayName || fullNamePlaceholder}</Text>
+          <Text style={styles.profileDetailText}>{firstName} {lastName}</Text>
         </View>
         <View style={styles.profileInfo}>
           <Text style={styles.label}>Email:</Text>
