@@ -1,45 +1,96 @@
-import { View, Text } from 'react-native';
-import styles from './profileStyle'
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image} from 'react-native';
+import styles from './profileStyle';
+import { useAuthentication } from '../../hooks/useAuth';
+import { useToken } from '../../api/getToken';
+import httpClient from "../../api/httpClient";
+import { getUsername } from '@/src/api/deviceService';
+import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+
+
 
 const Profile = () => {
-  // Dummy profile information
-  const profileInfo = {
-    name: 'John Doe',
-    age: 30,
-    occupation: 'Software Engineer',
-    location: 'New York, USA',
-    interests: ['Reading', 'Traveling', 'Photography'],
-  };
+  const { user } = useAuthentication();
+  const token = useToken();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
+  useEffect(() => {
+    if (token) {
+      httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]); 
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const user = FIREBASE_AUTH.currentUser;
+        if (user) {
+          const uid = user.uid;
+          const response = await getUsername(uid);
+          setFirstName(response.firstName);
+          setLastName(response.lastName);
+        } else {
+          console.error('User is not authenticated.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []); 
+
+
+
+
+  const formattedRegistrationDate = user?.metadata.creationTime
+    ? new Date(user.metadata.creationTime).toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'Unknown';
+
+    const formattedLastSignInTime = user?.metadata.lastSignInTime
+    ? new Date(user.metadata.lastSignInTime).toLocaleString('en-GB', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+      })
+    : 'Unknown';
+
+
+  console.log(user)
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Profile</Text>
-      <View style={styles.profileInfo}>
-        <Text style={styles.label}>Name:</Text>
-        <Text>{profileInfo.name}</Text>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.label}>Age:</Text>
-        <Text>{profileInfo.age}</Text>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.label}>Occupation:</Text>
-        <Text>{profileInfo.occupation}</Text>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.label}>Location:</Text>
-        <Text>{profileInfo.location}</Text>
-      </View>
-      <View style={styles.profileInfo}>
-        <Text style={styles.label}>Interests:</Text>
-        {profileInfo.interests.map((interest, index) => (
-          <Text key={index}>{interest}</Text>
-        ))}
+      <View style={styles.card}>
+        <Text style={styles.heading}>Profile</Text>
+        <View style={styles.profileInfo}>
+          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.profileDetailText}>{firstName} {lastName}</Text>
+        </View>
+        <View style={styles.profileInfo}>
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.profileDetailText}>{user?.email}</Text>
+        </View>
+        <View style={styles.profileInfo}>
+          <Text style={styles.label}>Registration Date:</Text>
+          <Text style={styles.profileDetailText}>{formattedRegistrationDate}</Text>
+        </View>
+        <View style={styles.profileInfo}>
+          <Text style={styles.label}>Last Sign-in Time:</Text>
+          <Text style={styles.profileDetailText}>{formattedLastSignInTime}</Text>
+        </View>
+        <Image
+          source={require('../../../assets/images/cat.png')}
+          style={styles.profileImage}
+        />
       </View>
     </View>
   );
 };
-
-
 
 export default Profile;

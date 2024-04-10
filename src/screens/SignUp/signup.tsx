@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './signUpStyle';
+import httpClient from "../../api/httpClient";
+import { updateUsernames } from '@/src/api/deviceService';
+import { useToken } from '../../api/getToken';
 
 const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   const [value, setValue] = useState({
@@ -15,6 +18,13 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     lastName: '',
     error: '' 
   });
+  const token = useToken();
+
+  useEffect(() => {
+    if (token) {
+      httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]); 
 
   async function signUp() {
     if (value.password !== value.confirmPassword) {
@@ -29,6 +39,14 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
 
     try {
       await createUserWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
+      const user = FIREBASE_AUTH.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const response = await updateUsernames(uid, value.firstName, value.lastName);
+      } else {
+        console.error('User is not authenticated.');
+        return;
+      }
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error signing up:', error);

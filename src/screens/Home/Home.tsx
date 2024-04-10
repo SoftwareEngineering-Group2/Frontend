@@ -11,6 +11,8 @@ import handleSpeech from './handleSpeech';
 import { useToken } from '../../api/getToken';
 import httpClient from "../../api/httpClient";
 import {useSocket} from '../../api/useSocket'
+import { getUsername } from '@/src/api/deviceService';
+import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 
 const Home = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -21,6 +23,7 @@ const Home = () => {
   const token = useToken();
   const { user } = useAuthentication();
   const allDevices = useSocket();
+  const [firstName, setFirstName] = useState('');
 
   useEffect(() => {
     if (token) {
@@ -33,6 +36,7 @@ const Home = () => {
     setModalVisible(true);
   };
 
+  
   useEffect(() => {
     if(token || allDevices){
       const fetchData = async () => {
@@ -41,20 +45,41 @@ const Home = () => {
     
       fetchData();
     }
+
      // Call the function to fetch data and handle speech
   }, [modalVisible, spokenText, token, allDevices])
 
-  // Detect screen width
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const user = FIREBASE_AUTH.currentUser;
+        if (user) {
+          const uid = user.uid;
+          const response = await getUsername(uid);
+          setFirstName(response.firstName);
+        } else {
+          console.error('User is not authenticated.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+
   const windowWidth = Dimensions.get('window').width;
 
-  // Calculate number of columns based on screen width
+
   const numColumns = windowWidth > 600 ? 2 : 1;
 
   const cardWidth = 1075 / numColumns;
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
-    // Perform search/filtering functionality here
+
     console.log('Search Query:', text);
   };
 
@@ -86,7 +111,7 @@ const Home = () => {
       scrollEventThrottle={16}
     >
       <View style={styles.container}>
-        <Text style={styles.welcomeText}>Welcome {user?.email ? user.email.split('@')[0] : ''}</Text>
+        <Text style={styles.welcomeText}>Welcome {firstName}</Text>
         <Text style={styles.heading}>Connected Devices</Text>
         {renderDynamicComponent()}
         <TextInput
