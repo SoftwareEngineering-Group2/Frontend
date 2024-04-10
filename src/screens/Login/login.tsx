@@ -55,9 +55,11 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       await signInWithEmailAndPassword(FIREBASE_AUTH, value.email, value.password);
       setAlert({variants: 2, show: true});
     } catch (error) {
+      // Handle Firebase authentication errors
+      const errorMessage = (error as any).message;
       setValue({
         ...value,
-        /* error: error.message, */
+        error: errorMessage
       });
     } finally {
       setLoading(false);
@@ -84,6 +86,7 @@ const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
       </Text>
       </View>
       <View style={styles.card}>
+      <Text style={styles.errorMessage}>{value.error}</Text>
         <View style={styles.inputContainer}>
           <Ionicons name="mail" size={24} color="#007bff" style={styles.icon} />
           <TextInput
