@@ -3,6 +3,7 @@ import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState, setCoffeeMachineType } from '../../api/deviceService';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -13,6 +14,8 @@ interface ModalProps {
 
 const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, deviceInfo }) => {
   const [isEnabled, setIsEnabled] = useState(deviceInfo?.status);
+  const [isMakingCoffee, setIsMakingCoffee] = useState(false);
+  const [coffeeTypeBeingMade, setCoffeeTypeBeingMade] = useState('');
 
   useEffect(() => {
     // Update the switch state based on device status
@@ -36,17 +39,35 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
 
   const makeEspresso = async () => {
     console.log('Making Espresso');
+    setIsMakingCoffee(true);
+    setCoffeeTypeBeingMade('Espresso');
     await setCoffeeMachineType('Espresso');
+    setTimeout(() => {
+      setIsMakingCoffee(false);
+      setCoffeeTypeBeingMade('');
+    }, 5000);
   };
-
+  
   const makeLatte = async () => {
     console.log('Making Latte');
+    setIsMakingCoffee(true);
+    setCoffeeTypeBeingMade('Latte');
     await setCoffeeMachineType('Latte');
+    setTimeout(() => {
+      setIsMakingCoffee(false);
+      setCoffeeTypeBeingMade('');
+    }, 5000); 
   };
-
+  
   const makeAmericano = async () => {
     console.log('Making Americano');
+    setIsMakingCoffee(true);
+    setCoffeeTypeBeingMade('Americano');
     await setCoffeeMachineType('Americano');
+    setTimeout(() => {
+      setIsMakingCoffee(false);
+      setCoffeeTypeBeingMade('');
+    }, 5000);
   };
 
   return (
@@ -58,6 +79,9 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+        <TouchableOpacity onPress={toggleModal} style = {styles.closebutton}>
+    <Ionicons name="close-circle-outline" size={24} color="#007bff" />
+    </TouchableOpacity>
           {deviceInfo && (
             <>
               <Text style={styles.modalText}>{deviceInfo.name}</Text>
@@ -71,23 +95,25 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
-            <TouchableOpacity onPress={makeEspresso} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Text style={styles.closeButtonText}>Espresso</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={makeLatte} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Text style={styles.closeButtonText}>Latte</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={makeAmericano} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Text style={styles.closeButtonText}>Americano</Text>
-            </TouchableOpacity>
+            {isMakingCoffee && (
+          <View style={styles.feedbackContainer}>
+            <Text style={styles.feedbackText}>Making {coffeeTypeBeingMade}, enjoy!</Text>
           </View>
-          <TouchableOpacity onPress={toggleModal} style={{ marginTop: 20 }}>
-            <Text style={styles.controlUnitText}>Close</Text>
+        )}
+        <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
+          <TouchableOpacity onPress={makeEspresso} style={styles.mediaControlButton} disabled={!isEnabled || isMakingCoffee}>
+            <Text style={styles.closeButtonText}>Espresso</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={makeLatte} style={styles.mediaControlButton} disabled={!isEnabled || isMakingCoffee}>
+            <Text style={styles.closeButtonText}>Latte</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={makeAmericano} style={styles.mediaControlButton} disabled={!isEnabled || isMakingCoffee}>
+            <Text style={styles.closeButtonText}>Americano</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </Modal>
+    </View>
+    </View>
+  </Modal>
   );
 };
 

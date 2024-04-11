@@ -31,15 +31,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    padding: 5,
-  },
-  closeButtonText: {
+    closeButtonText: {
     fontSize: 20,
-    color: '#007bff',
+    color: '#FFFFFF',
   },
   onText: {
     color: '#4caf50',
@@ -57,10 +51,27 @@ const styles = StyleSheet.create({
   },
   mediaControlButton: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 2,
+  },
+  feedbackContainer: {
+    marginTop: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#007bff'
+  },
+  feedbackText: {
+    color: '#FFFFFF', // White text for visibility
+    fontSize: 16,
+  },
+  closebutton: {
+    position: 'relative',
+    top: 0, // Adjust the top value as needed
   },
 });
 
