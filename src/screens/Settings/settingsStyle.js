@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     position: 'relative',
+    backgroundColor: 'transparent',
+    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)'
   },
   heading: {
     fontSize: 24,
