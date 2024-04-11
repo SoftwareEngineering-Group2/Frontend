@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import {Platform, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '100%',
+    width: Platform.OS === 'web' ? 500 : '100%',
     marginBottom: 20,
   },
   inputContainer: {
