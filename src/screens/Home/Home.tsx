@@ -188,7 +188,10 @@ export interface Device {
 }
 const fetchDevices = async (setDevices: React.Dispatch<React.SetStateAction<Device[]>>) => {
   try {
-    const response = await getAllDevices();
+    const user = FIREBASE_AUTH.currentUser;
+    if(user){
+    const uid = user.uid;
+    const response = await getAllDevices(uid);
     const apiDevices = response.allDevices;
 
     const mappedDevices: Device[] = await Promise.all(
@@ -206,8 +209,9 @@ const fetchDevices = async (setDevices: React.Dispatch<React.SetStateAction<Devi
         };
       })
     );
-
+  
     setDevices(mappedDevices);
+  }
   } catch (error) {
     console.error('Error fetching devices:', error);
   }
