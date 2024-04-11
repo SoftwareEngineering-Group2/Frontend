@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     elevation: 3,
+    borderRadius: 10,
+    borderWidth: 1, // Added border
+    borderColor: '#007bff', // Border color changed to blue
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

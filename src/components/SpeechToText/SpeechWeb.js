@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text,TouchableOpacity } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 const SpeechToText = ({ spokenText }) => {
   const [recognizedText, setRecognizedText] = useState('');
@@ -27,11 +28,14 @@ const SpeechToText = ({ spokenText }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button
-        title={isListening ? 'Stop Listening' : 'Start Listening'}
-        onPress={isListening ? stopListening : startListening}
-      />
-      {/* <Text style={{ marginTop: 20 }}>Recognized Text: {recognizedText}</Text> */}
+      <TouchableOpacity onPress={isListening ? stopListening : startListening}>
+        <FontAwesome
+          name={isListening ? 'microphone': 'microphone-slash'}
+          size={48}
+          color={isListening ? 'red' : '#007bff'}
+          style={{ marginBottom: 10 }}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
