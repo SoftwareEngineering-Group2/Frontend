@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: '#007bff',
     fontStyle: 'italic',
+    fontSize: 16,
   },
   button: {
     backgroundColor: '#007bff',
