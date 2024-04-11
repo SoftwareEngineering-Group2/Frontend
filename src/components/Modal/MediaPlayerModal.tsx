@@ -3,6 +3,7 @@ import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState } from '../../api/deviceService';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -34,6 +35,11 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     }
   };
 
+  // Placeholder functions for media player actions
+  const handlePlay = () => console.log('Play action');
+  const handleSkip = () => console.log('Skip action');
+  const handleStop = () => console.log('Stop action');
+
   return (
     <Modal
       animationType="fade"
@@ -45,7 +51,6 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
         <View style={styles.modalView}>
           {deviceInfo && (
             <>
-              <Text style={styles.modalText}>mediamodal</Text>
               <Text style={styles.modalText}>{deviceInfo.name}</Text>
               <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
             </>
@@ -57,7 +62,18 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
-          <TouchableOpacity onPress={toggleModal}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
+            <TouchableOpacity onPress={handlePlay} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Ionicons name="play" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleStop} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Ionicons name="stop" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSkip} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Ionicons name="play-skip-forward" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={toggleModal} style={{ marginTop: 20 }}>
             <Text style={styles.controlUnitText}>Close</Text>
           </TouchableOpacity>
         </View>

@@ -12,24 +12,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
-    elevation: 5, 
+    elevation: 5,
     borderWidth: 1,
-    borderColor: '#007bff', 
+    borderColor: '#007bff',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
     fontSize: 18,
     color: '#007bff',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)', 
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 1, height: 1 }, // Adjusted shadow offset for a subtle effect
     textShadowRadius: 2, // Adjusted shadow radius for a subtle effect
   },
   controlUnitText: {
     fontSize: 18,
     color: '#007bff',
-    fontWeight: 'bold', 
-    marginTop: 10, 
+    fontWeight: 'bold',
+    marginTop: 10,
   },
   closeButton: {
     position: 'absolute',
@@ -52,8 +52,15 @@ const styles = StyleSheet.create({
     color: '#f44336',
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 1, height: 1 }, 
+    textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
+  },
+  mediaControlButton: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 2,
   },
 });
 
