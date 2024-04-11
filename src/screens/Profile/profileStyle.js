@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'transparent',
+    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)'
   },
   heading: {
     fontSize: 24,
