@@ -19,6 +19,10 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
     error: '' 
   });
   const token = useToken();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   useEffect(() => {
     if (token) {
@@ -97,20 +101,34 @@ const SignUp = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
           <TextInput
             style={[styles.input, styles.inputText]}
             placeholder="Password"
-            secureTextEntry={true}
+            secureTextEntry={!passwordVisible}
             value={value.password}
             onChangeText={(text) => setValue({ ...value, password: text })}
           />
+          <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+          <Ionicons
+            name={passwordVisible ? "eye" : "eye-off"}
+            size={24}
+            color="#007bff"
+          />
+        </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
           <Ionicons name="lock-closed" size={24} color="#007bff" style={styles.icon} />
           <TextInput
             style={[styles.input, styles.inputText]}
             placeholder="Confirm Password"
-            secureTextEntry={true}
+            secureTextEntry={!passwordVisible}
             value={value.confirmPassword}
             onChangeText={(text) => setValue({ ...value, confirmPassword: text })}
           />
+          <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+          <Ionicons
+            name={passwordVisible ? "eye" : "eye-off"}
+            size={24}
+            color="#007bff"
+          />
+        </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.button} onPress={signUp}>
           <Text style={styles.buttonText}>Create Account</Text>

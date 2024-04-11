@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
     padding: 20,
     position: 'relative',
     width: '100%', // or use flexGrow: 1
+    backgroundColor: 'transparent',
+    backgroundImage: 'radial-gradient(#FCFCFC 50%, #CCE4FF 80%, #007bff)'
   },
   heading: {
     fontSize: 20,

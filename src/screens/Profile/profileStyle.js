@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import {Platform, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'transparent',
+    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)'
   },
   heading: {
     fontSize: 24,
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    width: '60%',
+    width: Platform.OS === 'web' ? 500 : '100%',
     marginBottom: 20,
     alignItems: 'flex-start',
   },
