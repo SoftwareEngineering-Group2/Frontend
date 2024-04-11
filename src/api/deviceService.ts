@@ -20,7 +20,7 @@ export const updateDeviceState = async (deviceType: string | undefined, newState
   }
 };
 
-export const updateUsernames = async (uid : string, firstName : string, lastName : string) => {
+export const updateUsernames = async (uid: string, firstName: string, lastName: string) => {
   try {
     const response = await httpClient.post(`/user/${uid}`, {
       firstName: firstName,
@@ -32,7 +32,7 @@ export const updateUsernames = async (uid : string, firstName : string, lastName
     throw error;
   }
 };
-export const getUsername = async (uid : string) => {
+export const getUsername = async (uid: string) => {
   try {
     const response = await httpClient.get(`/user/${uid}`, {
     });
@@ -73,25 +73,16 @@ export const getAllDevices = async () => {
   }
 };
 
-export const updateCoffeeMachine = async (
-  deviceState: boolean,
+export const setCoffeeMachineType = async (
   coffeeType: string
 ) => {
   try {
-    const deviceStateString = String(deviceState);
-
-    // Update the coffeeMachine state
-    const stateResponse = await httpClient.post(`/device/coffeeMachine/deviceState`, {
-      newInformation: deviceStateString
-    });
-
     // Update the coffee type e.g. Latte, Espresso, Americano
     const coffeeTypeResponse = await httpClient.post(`/device/coffeeMachine/coffeeType`, {
       newInformation: coffeeType
     });
 
     return {
-      stateUpdateResponse: stateResponse.data,
       coffeeTypeUpdateResponse: coffeeTypeResponse.data,
     };
 
@@ -128,6 +119,26 @@ export const updateMicrowaveOven = async (
       stateUpdateResponse: stateResponse.data,
       ovenModeUpdateResponse: modeResponse.data,
       ovenTimerUpdateResponse: timerResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+export const setMediaPlayerStatus = async (
+  status: string,
+) => {
+  try {
+    const StatusString = String(status);
+
+    const stateResponse = await httpClient.post(`/device/mediaPlayer/status`, {
+      newInformation: StatusString
+    });
+
+    return {
+      stateUpdateResponse: stateResponse.data,
     };
 
   } catch (error) {
