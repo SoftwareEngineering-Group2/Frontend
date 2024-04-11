@@ -3,6 +3,7 @@ import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState } from '../../api/deviceService';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -42,6 +43,9 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
       onRequestClose={toggleModal}
     >
       <View style={styles.centeredView}>
+                  <TouchableOpacity onPress={toggleModal} style = {styles.closebutton}>
+                  <Ionicons name="close-circle-outline" size={24} color="#007bff" />
+                  </TouchableOpacity>
         <View style={styles.modalView}>
           {deviceInfo && (
             <>
@@ -57,9 +61,6 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
-          <TouchableOpacity onPress={toggleModal}>
-            <Text style={styles.controlUnitText}>Close</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </Modal>
