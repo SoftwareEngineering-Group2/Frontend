@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
 import { Platform } from 'react-native';
-import { getAllDevices, getDeviceImage, updateCoffeeMachine, updateMicrowaveOven } from '../../api/deviceService';
+import { getAllDevices, getDeviceImage, updateMicrowaveOven } from '../../api/deviceService';
 import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
 import MediaPlayerModal from '../../components/Modal/MediaPlayerModal';
