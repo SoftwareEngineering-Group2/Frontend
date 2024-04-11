@@ -5,12 +5,15 @@ import { Platform } from 'react-native';
 import { getAllDevices, getDeviceImage, updateCoffeeMachine, updateMicrowaveOven } from '../../api/deviceService';
 import styles from './HomeStyle'
 import Modal from '../../components/Modal/Modal';
+import MediaPlayerModal from '../../components/Modal/MediaPlayerModal';
+import CoffeeMachineModal from '../../components/Modal/CoffeeMachineModal';
+import MicrowaveModal from '../../components/Modal/MicrowaveModal';
 import Speech from '../../components/SpeechToText/Speech';
 import SpeechWeb from '../../components/SpeechToText/SpeechWeb';
 import handleSpeech from './handleSpeech';
 import { useToken } from '../../api/getToken';
 import httpClient from "../../api/httpClient";
-import {useSocket} from '../../api/useSocket'
+import { useSocket } from '../../api/useSocket'
 import { getUsername } from '@/src/api/deviceService';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 
@@ -29,24 +32,24 @@ const Home = () => {
     if (token) {
       httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
-  }, [token]); 
+  }, [token]);
 
   const toggleModal = async (device: Device) => {
     setSelectedDevice(device);
     setModalVisible(true);
   };
 
-  
+
   useEffect(() => {
-    if(token || allDevices){
+    if (token || allDevices) {
       const fetchData = async () => {
         await fetchDevices(setDevices);
       };
-    
+
       fetchData();
     }
 
-     // Call the function to fetch data and handle speech
+    // Call the function to fetch data and handle speech
   }, [modalVisible, spokenText, token, allDevices])
 
 
@@ -98,10 +101,10 @@ const Home = () => {
   const renderDynamicComponent = () => {
     if (Platform.OS === 'web') {
       // Render the alternative component for web
-      return <SpeechWeb spokenText={handleSpokenText}/>;
+      return <SpeechWeb spokenText={handleSpokenText} />;
     } else {
       // Render the Speech component for mobile platforms
-      return <Speech spokenText={handleSpokenText}/>;
+      return <Speech spokenText={handleSpokenText} />;
     }
   };
 
@@ -144,11 +147,31 @@ const Home = () => {
           ))}
         </View>
         {selectedDevice && (
-          <Modal
-            modalVisible={modalVisible}
-            toggleModal={() => setModalVisible(!modalVisible)}
-            deviceInfo={selectedDevice}
-          />
+          selectedDevice.id === 10 ? (
+            <MediaPlayerModal
+              modalVisible={modalVisible}
+              toggleModal={() => setModalVisible(!modalVisible)}
+              deviceInfo={selectedDevice}
+            />
+          ) : selectedDevice.id === 8 ? (
+            <CoffeeMachineModal
+              modalVisible={modalVisible}
+              toggleModal={() => setModalVisible(!modalVisible)}
+              deviceInfo={selectedDevice}
+            />
+          ) : selectedDevice.id === 7 ? (
+            <MicrowaveModal
+              modalVisible={modalVisible}
+              toggleModal={() => setModalVisible(!modalVisible)}
+              deviceInfo={selectedDevice}
+            />
+          ) : (
+            <Modal
+              modalVisible={modalVisible}
+              toggleModal={() => setModalVisible(!modalVisible)}
+              deviceInfo={selectedDevice}
+            />
+          )
         )}
       </View>
     </ScrollView>
