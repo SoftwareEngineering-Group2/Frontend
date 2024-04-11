@@ -86,6 +86,10 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginBottom: 10,
+  },
+  eyeIcon: {
+   position: 'absolute',
+   right: 10,
   }
 });
 

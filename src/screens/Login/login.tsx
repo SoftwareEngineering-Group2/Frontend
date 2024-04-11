@@ -110,7 +110,7 @@ return (
           secureTextEntry={!passwordVisible}
           onChangeText={(text) => setValue({ ...value, password: text })}
         />
-        <TouchableOpacity onPress={togglePasswordVisibility}>
+        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
           <Ionicons
             name={passwordVisible ? "eye" : "eye-off"}
             size={24}
