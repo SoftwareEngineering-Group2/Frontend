@@ -1,7 +1,8 @@
-import { Text, Button, View } from 'react-native';
+import { Text, Button, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import Voice from '@react-native-voice/voice';
 import styles from './SpeechStyle';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 /* From the terminal: eas build--profile development--platform android
@@ -43,9 +44,16 @@ export default function Speech({ spokenText }) {
   };
 
   return (
-    <View style={styles.container}>
-      {!started ? <Button title='Start listening' onPress={startSpeechToText} /> : undefined}
-      {started ? <Button title='Stop listening' onPress={stopSpeechToText} /> : undefined}
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <TouchableOpacity onPress={started ? startSpeechToText : stopSpeechToText}>
+        <FontAwesome
+          name={started ? 'microphone': 'microphone-slash'}
+          size={48}
+          color={started ? 'red' : '#007bff'}
+          style={{ marginBottom: 10 }}
+        />
+      </TouchableOpacity>
     </View>
   );
-}
+};
+
