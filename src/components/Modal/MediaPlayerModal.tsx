@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
-import { updateDeviceState } from '../../api/deviceService';
+import { updateDeviceState, setMediaPlayerStatus } from '../../api/deviceService';
 import { Ionicons } from '@expo/vector-icons';
 
 interface ModalProps {
@@ -35,10 +35,32 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     }
   };
 
-  // Placeholder functions for media player actions
-  const handlePlay = () => console.log('Play action');
-  const handleSkip = () => console.log('Skip action');
-  const handleStop = () => console.log('Stop action');
+  const handlePlay = async () => {
+    try {
+      await setMediaPlayerStatus("play");
+      console.log('Play action sent');
+    } catch (error) {
+      console.error('Error sending Play action:', error);
+    }
+  };
+
+  const handleSkip = async () => {
+    try {
+      await setMediaPlayerStatus("skip");
+      console.log('Skip action sent');
+    } catch (error) {
+      console.error('Error sending Skip action:', error);
+    }
+  };
+
+  const handleStop = async () => {
+    try {
+      await setMediaPlayerStatus("stop");
+      console.log('Stop action sent');
+    } catch (error) {
+      console.error('Error sending Stop action:', error);
+    }
+  };
 
   return (
     <Modal

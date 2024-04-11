@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
-import { updateDeviceState } from '../../api/deviceService';
+import { updateDeviceState, setCoffeeMachineType } from '../../api/deviceService';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -34,6 +34,21 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     }
   };
 
+  const makeEspresso = async () => {
+    console.log('Making Espresso');
+    await setCoffeeMachineType('Espresso');
+  };
+
+  const makeLatte = async () => {
+    console.log('Making Latte');
+    await setCoffeeMachineType('Latte');
+  };
+
+  const makeAmericano = async () => {
+    console.log('Making Americano');
+    await setCoffeeMachineType('Americano');
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -45,7 +60,6 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
         <View style={styles.modalView}>
           {deviceInfo && (
             <>
-              <Text style={styles.modalText}>coffeemodal</Text>
               <Text style={styles.modalText}>{deviceInfo.name}</Text>
               <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
             </>
@@ -57,7 +71,18 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
-          <TouchableOpacity onPress={toggleModal}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
+            <TouchableOpacity onPress={makeEspresso} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Text style={styles.closeButtonText}>Espresso</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={makeLatte} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Text style={styles.closeButtonText}>Latte</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={makeAmericano} style={styles.mediaControlButton} disabled={!isEnabled}>
+              <Text style={styles.closeButtonText}>Americano</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={toggleModal} style={{ marginTop: 20 }}>
             <Text style={styles.controlUnitText}>Close</Text>
           </TouchableOpacity>
         </View>
