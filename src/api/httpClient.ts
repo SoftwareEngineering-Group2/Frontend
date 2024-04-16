@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../node_modules/axios';
 
 const BASE_URL = "https://server-o8if.onrender.com"
 const httpClient = axios.create({
