@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState } from '../../api/deviceService';
@@ -41,26 +41,28 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
           visible={modalVisible}
           onRequestClose={toggleModal}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-            {deviceInfo && (
-          <>
-            <Text style={styles.modalText}>{deviceInfo.name}</Text>
-            <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
-                </>
-              )}
-              <Switch
-                trackColor={{ false: '#767577', true: '#4c97ff' }}
-                thumbColor={isEnabled ? '#f5dd4b' : '#f44336'}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-              <TouchableOpacity onPress={toggleModal}>
-                <Text style={styles.controlUnitText}>Close</Text>
-              </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={toggleModal}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+              {deviceInfo && (
+              <>
+              <Text style={styles.modalText}>{deviceInfo.name}</Text>
+              <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
+                  </>
+                )}
+                <Switch
+                  trackColor={{ false: '#767577', true: '#4c97ff' }}
+                  thumbColor={isEnabled ? '#f5dd4b' : '#f44336'}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+                <TouchableOpacity onPress={toggleModal}>
+                  <Text style={styles.controlUnitText}>Close</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       );
     };

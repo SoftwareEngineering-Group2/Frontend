@@ -10,11 +10,16 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 20,
     alignItems: 'center',
     elevation: 5,
     borderWidth: 1,
     borderColor: '#007bff',
+  },
+  closebutton: {
+    alignSelf: 'flex-end' // Adjust the top value as needed
+  },
+  items:{
+    padding: 10
   },
   modalText: {
     marginBottom: 15,
@@ -24,6 +29,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 1, height: 1 }, // Adjusted shadow offset for a subtle effect
     textShadowRadius: 2, // Adjusted shadow radius for a subtle effect
+    padding: 10,
   },
   controlUnitText: {
     fontSize: 18,
@@ -69,10 +75,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF', // White text for visibility
     fontSize: 16,
   },
-  closebutton: {
-    position: 'relative',
-    top: 0, // Adjust the top value as needed
-  },
+  switch:{
+    marginBottom: 10,
+  }
+  
 });
 
 export default styles;
