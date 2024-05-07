@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState, setCoffeeMachineType } from '../../api/deviceService';
@@ -77,13 +77,14 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
       visible={modalVisible}
       onRequestClose={toggleModal}
     >
+    <TouchableWithoutFeedback onPress={toggleModal}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-        <TouchableOpacity onPress={toggleModal} style = {styles.closebutton}>
-    <Ionicons name="close-circle-outline" size={24} color="#007bff" />
-    </TouchableOpacity>
           {deviceInfo && (
             <>
+              <TouchableOpacity onPress={toggleModal} style = {styles.closebutton}>
+                <Ionicons name="close-circle-outline" size={24} color="#007bff" />
+              </TouchableOpacity>
               <Text style={styles.modalText}>{deviceInfo.name}</Text>
               <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
             </>
@@ -113,6 +114,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
         </View>
     </View>
     </View>
+    </TouchableWithoutFeedback>
   </Modal>
   );
 };

@@ -45,7 +45,7 @@ export default function Speech({ spokenText }) {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity onPress={started ? startSpeechToText : stopSpeechToText}>
+      <TouchableOpacity onPress={started ? stopSpeechToText : startSpeechToText}>
         <FontAwesome
           name={started ? 'microphone': 'microphone-slash'}
           size={48}
