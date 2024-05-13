@@ -79,6 +79,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     >
     <TouchableWithoutFeedback onPress={toggleModal}>
       <View style={styles.centeredView}>
+        <TouchableWithoutFeedback onPress={() => {}}>
         <View style={styles.modalView}>
           {deviceInfo && (
             <>
@@ -113,6 +114,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
           </TouchableOpacity>
         </View>
     </View>
+    </TouchableWithoutFeedback>
     </View>
     </TouchableWithoutFeedback>
   </Modal>
