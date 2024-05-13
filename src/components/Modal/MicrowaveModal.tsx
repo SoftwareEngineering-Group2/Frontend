@@ -4,6 +4,7 @@ import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
 import { updateDeviceState } from '../../api/deviceService';
 import { Ionicons } from '@expo/vector-icons';
+import { mapDisplayName } from '../../screens/Home/Home';
 
 interface ModalProps {
   modalVisible: boolean;
@@ -52,7 +53,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
                 <Ionicons name="close-circle-outline" size={24} color="#007bff" />
               </TouchableOpacity>
               <View style={styles.items}>
-                <Text style={styles.modalText}>{deviceInfo.name}</Text>
+                <Text style={styles.modalText}>{mapDisplayName(deviceInfo.name)}</Text>
                 <Text style={styles.modalText}>Status: <Text style={isEnabled ? styles.onText : styles.offText}>{isEnabled ? 'On' : 'Off'}</Text></Text>
                 
               </View>          
