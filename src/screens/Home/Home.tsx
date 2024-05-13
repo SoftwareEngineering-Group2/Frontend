@@ -87,7 +87,7 @@ const Home = () => {
   };
 
   const filteredDevices = devices.filter(device =>
-    device.name.toLowerCase().includes(searchQuery.toLowerCase())
+    mapDisplayName(device.name).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Function to handle the spoken text
