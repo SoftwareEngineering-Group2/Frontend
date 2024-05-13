@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Animated, TextInput, NativeEventEmitter, NativeSyntheticEvent, Dimensions, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback, Dimensions, Image } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
 import { Platform } from 'react-native';
 import { getAllDevices, getDeviceImage, updateMicrowaveOven } from '../../api/deviceService';
@@ -172,9 +172,10 @@ const Home = () => {
               deviceInfo={selectedDevice}
             />
           )
-        )}
+        )}      
       </View>
     </ScrollView>
+    
   );
 };
 
