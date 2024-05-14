@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 100,
     marginTop: 10,
   },
   cardsContainer: {
