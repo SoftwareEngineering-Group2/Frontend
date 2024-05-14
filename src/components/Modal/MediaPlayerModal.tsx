@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Modal, Button, Switch, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Device } from '../../screens/Home/Home';
 import styles from './ModalStyle'
-import { updateDeviceState, setMediaPlayerStatus } from '../../api/deviceService';
+import { updateDeviceState, setMediaPlayerStatus, skipMediaPlayer } from '../../api/deviceService';
 import { Ionicons } from '@expo/vector-icons';
 
 interface ModalProps {
@@ -46,7 +46,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
 
   const handleSkip = async () => {
     try {
-      await setMediaPlayerStatus("skip");
+      await skipMediaPlayer();
       console.log('Skip action sent');
     } catch (error) {
       console.error('Error sending Skip action:', error);
