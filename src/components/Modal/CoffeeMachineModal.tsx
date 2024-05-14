@@ -103,7 +103,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
             <Text style={styles.feedbackText}>Making {coffeeTypeBeingMade}, enjoy!</Text>
           </View>
         )}
-        <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 20, }}>
           <TouchableOpacity onPress={makeEspresso} style={styles.mediaControlButton} disabled={!isEnabled || isMakingCoffee}>
             <Text style={styles.closeButtonText}>Espresso</Text>
           </TouchableOpacity>

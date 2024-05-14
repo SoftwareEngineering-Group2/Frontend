@@ -232,6 +232,8 @@ export const mapDisplayName = (deviceName: string) => {
       return 'Buzzer';
     case 'fan':
       return 'Fan';
+    case 'curtain':
+      return 'Curtain';
     case 'gasSensor':
       return 'Gas Sensor';
     case 'microOven':
