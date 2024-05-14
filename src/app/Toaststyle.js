@@ -22,7 +22,7 @@ const webStyles = {
   toast: {
     ...commonStyles.toast,
     top: '12%',
-    left: '49.7%',
+    left: '44.4%',
     width: 200,
     height: 70,
     padding: 10,
