@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import styles from "./settingsStyle";
+import { Ionicons } from "@expo/vector-icons";
+
 import {
   View,
   Text,
@@ -16,8 +19,6 @@ import {
   updatePassword,
 } from "firebase/auth"; // Ensure correct imports
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
-import styles from "./settingsStyle";
-import { Ionicons } from "@expo/vector-icons";
 
 const Settings = () => {
   const [newEmail, setNewEmail] = useState<string>("");
@@ -111,6 +112,7 @@ const Settings = () => {
         <Text style={styles.heading}>Settings</Text>
 
         <View style={styles.inputRow}>
+          <Ionicons name="mail" size={24} color="#007bff" style={styles.icon} />
           <TextInput
             style={styles.inputField}
             onChangeText={setNewEmail}
@@ -119,12 +121,20 @@ const Settings = () => {
             autoCapitalize="none"
           />
         </View>
-        <Button title="Update Email" onPress={handleUpdateEmail} />
+        <TouchableOpacity style={styles.button} onPress={handleUpdateEmail}>
+          <Text style={styles.buttonText}>Update Email</Text>
+        </TouchableOpacity>
 
         <View style={styles.inputRow}>
+          <Ionicons
+            name="lock-closed"
+            size={24}
+            color="#007bff"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.inputField}
-            onChangeText={handleNewPasswordChange} // Pass the new handler
+            onChangeText={handleNewPasswordChange}
             value={newPassword}
             placeholder="Enter new password"
             secureTextEntry={!newPasswordVisible}
@@ -142,6 +152,12 @@ const Settings = () => {
         </View>
 
         <View style={styles.inputRow}>
+          <Ionicons
+            name="lock-closed"
+            size={24}
+            color="#007bff"
+            style={styles.icon}
+          />
           <TextInput
             style={styles.inputField}
             onChangeText={setConfirmPassword}
@@ -160,7 +176,9 @@ const Settings = () => {
             />
           </TouchableOpacity>
         </View>
-        <Button title="Update Password" onPress={handleUpdatePassword} />
+        <TouchableOpacity style={styles.button} onPress={handleUpdatePassword}>
+          <Text style={styles.buttonText}>Update Password</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
