@@ -148,6 +148,25 @@ export const setMediaPlayerStatus = async (
   }
 };
 
+export const skipMediaPlayer = async (
+) => {
+  try {
+    const stateResponse = await httpClient.post(`/mediaPlayer/skip`, {
+      newInformation: "skip"
+    });
+
+    return {
+      stateUpdateResponse: stateResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+
+
 const handleApiError = (error: any) => {
   if (error.response) {
     // The request was made and the server responded with a status code
