@@ -1,4 +1,4 @@
-import {Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: 'transparent',
-    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)'
+    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)',
   },
   heading: {
     fontSize: 24,
@@ -23,10 +23,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     elevation: 3,
-    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#007bff',
-    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -39,32 +37,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-  width: '100%',
-  padding: 10,
-  borderWidth: 1,
-  borderColor: '#007bff',
-  marginBottom: 10,
-  borderRadius: 5,
-  backgroundColor: '#FFFFFF'
-},
-button: {
-  backgroundColor: '#007bff',
-  color: '#FFFFFF',
-  padding: 10,
-  borderRadius: 5,
-  textAlign: 'center',
-  marginTop: 20, // Add some space above the button
-  marginBottom: 20, // Add some space below the button
+    width: '100%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#007bff',
+    marginBottom: 10,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
   },
-inputContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: 15
-},
+  button: {
+    backgroundColor: '#007bff',
+    color: '#FFFFFF',
+    paddingVertical: 7,  // Adjust padding to make the button smaller
+    paddingHorizontal: 20, // Adjust padding to make the button smaller
+    borderRadius: 10, // Round the button
+    textAlign: 'center',
+    alignItems: 'center', // Center text inside the button
+    justifyContent: 'center',
+    width: '38%', // Adjust width if necessary
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
   inputRow: {
     flexDirection: 'row',
-    width: '70%',
+    width: '100%',
     alignItems: 'center',
     backgroundColor: '#FFFFFF', // Match background color with the input field
     borderWidth: 1,
@@ -74,16 +79,19 @@ inputContainer: {
     marginBottom: 20,
     marginTop: 20, // Space between this field and the next component
   },
-inputField: {
-  flex: 1,
-  padding: 10,
-  borderWidth: 0,
-  backgroundColor: '#FFFFFF', // Ensure this is set to white
-  fontSize: 16,
-},
+  inputField: {
+    flex: 1,
+    padding: 10,
+    borderWidth: 0,
+    backgroundColor: '#FFFFFF', // Ensure this is set to white
+    fontSize: 16,
+  },
+  icon: {
+    marginRight: 10,
+  },
   eyeIcon: {
     padding: 10, // Padding for touchable area
-  }
+  },
 });
 
 export default styles;

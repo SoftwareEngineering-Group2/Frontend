@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderWidth: 1,
     borderColor: '#007bff',
+    padding: 20,
   },
   closebutton: {
-    alignSelf: 'flex-end' // Adjust the top value as needed
+    alignSelf: 'flex-end', // Adjust the top value as needed
   },
-  items:{
-    padding: 10
+  items: {
+    padding: 10,
   },
   modalText: {
     marginBottom: 15,
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
   },
-    closeButtonText: {
+  closeButtonText: {
     fontSize: 20,
     color: '#FFFFFF',
   },
@@ -78,10 +79,50 @@ const styles = StyleSheet.create({
     color: '#FFFFFF', // White text for visibility
     fontSize: 16,
   },
-  switch:{
+  switch: {
     marginBottom: 10,
-  }
-  
+  },
+  sliderLabel: {
+    fontSize: 16,
+    color: '#007bff',
+    marginBottom: 5,
+  },
+  slider: {
+    width: '80%',
+    height: 40,
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  button: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    textAlign:'center',
+  },
+  wattButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginVertical: 10,
+  },
+  wattButton: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: '25%',
+  },
+  selectedWattButton: {
+    backgroundColor: '#0056b3', // A darker blue to indicate selection
+  },
 });
 
 export default styles;
