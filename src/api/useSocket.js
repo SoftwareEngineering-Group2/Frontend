@@ -10,7 +10,7 @@ export const useSocket = () => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = ioClient(SERVER_URL, { reconnection: true });
+        const socket = ioClient(SERVER_URL, { reconnection: false });
         socketRef.current = socket;
 
         socket.on('connect', () => {
@@ -18,7 +18,6 @@ export const useSocket = () => {
         });
 
         socket.on('all-devices', (devices) => {
-            console.log('Received all devices:', devices);
             setData((prevData) => {
                 if (JSON.stringify(prevData.allDevices) !== JSON.stringify(devices)) {
                     return { ...prevData, allDevices: devices, lastUpdated: 'allDevices' };
@@ -28,7 +27,6 @@ export const useSocket = () => {
         });
 
         socket.on('device-state-changed', (devices) => {
-            console.log('Device state changed:', devices);
             setData((prevData) => {
                 if (JSON.stringify(prevData.allDevices) !== JSON.stringify(devices)) {
                     return { ...prevData, allDevices: devices, lastUpdated: 'allDevices' };
@@ -42,20 +40,20 @@ export const useSocket = () => {
 
         });
         socket.on('sensor-channel', (message) => {
-            console.log(message);
             setData((prevData) => ({ ...prevData, message, lastUpdated: 'message' }));
             showToast(message);
           });
-          
+
         return () => {
+            socket.disconnect();
             socket.off('connect');
             socket.off('all-devices');
             socket.off('device-state-changed');
-            socket.off('disconnect');
             socket.off('sensor-channel');
-            socket.disconnect();
+            socket.off('disconnect');
         };
-    }, [showToast]); // Ensure the effect runs only once and when showToast changes
+          
+    }, []); // Ensure the effect runs only once and when showToast changes
 
     return data;
 };

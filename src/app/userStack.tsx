@@ -4,14 +4,11 @@ import HomeScreen from '../screens/Home/Home';
 import NavBar from '../components/Navigation/Navigation';
 import Settings from '../screens/Settings/settings';
 import Profile from '../screens/Profile/profile';
-import { useSocket } from '../api/useSocket';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 
 export default function UserStack() {
-  const { allDevices, message } = useSocket();
-  console.log(message);
 
   return (
     <NavigationContainer independent={true}>
