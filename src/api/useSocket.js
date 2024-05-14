@@ -10,7 +10,7 @@ export const useSocket = () => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = ioClient(SERVER_URL, { reconnection: true });
+        const socket = ioClient(SERVER_URL, { reconnection: false });
         socketRef.current = socket;
 
         socket.on('connect', () => {
@@ -43,16 +43,17 @@ export const useSocket = () => {
             setData((prevData) => ({ ...prevData, message, lastUpdated: 'message' }));
             showToast(message);
           });
-          
+
         return () => {
+            socket.disconnect();
             socket.off('connect');
             socket.off('all-devices');
             socket.off('device-state-changed');
-            socket.off('disconnect');
             socket.off('sensor-channel');
-            socket.disconnect();
+            socket.off('disconnect');
         };
-    }, [showToast]); // Ensure the effect runs only once and when showToast changes
+          
+    }, []); // Ensure the effect runs only once and when showToast changes
 
     return data;
 };
