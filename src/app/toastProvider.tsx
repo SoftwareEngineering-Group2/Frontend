@@ -23,7 +23,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setToastMessage(message);
     setTimeout(() => {
       setToastMessage(null);
-    }, 3000); // Toast will disappear after 3 seconds
+    }, 5000); // Toast will disappear after 3 seconds
   };
 
   return (

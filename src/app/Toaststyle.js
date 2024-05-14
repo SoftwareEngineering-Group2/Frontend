@@ -1,15 +1,52 @@
-export const toastStyles = {
-    toast: {
-      position: 'fixed',
-      top: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      color: '#fff',
-      padding: '10px 20px',
-      borderRadius: '5px',
-      zIndex: 1000,
-      opacity: 1,
-      display: 'block'
-    },
-  };
+import { StyleSheet, Platform } from "react-native";
+
+const commonStyles = {
+  toast: {
+    position: 'absolute',
+    transform: [{ translateX: -100 }], // Adjust to center horizontally
+    borderRadius: 5,
+    zIndex: 1000,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  text: {
+    textAlign: 'center',    
+    color: 'black',
+    fontWeight: 'bold',
+  },
+};
+
+const webStyles = {
+  toast: {
+    ...commonStyles.toast,
+    top: '12%',
+    left: '49.7%',
+    width: 200,
+    height: 70,
+    padding: 10,
+  },
+  text: {
+    ...commonStyles.text,
+  },
+};
+
+const mobileStyles = {
+  toast: {
+    ...commonStyles.toast,
+    padding: 5,
+    top: '20%',
+    left: '57%',
+    width: 150, 
+    height: 70,
+  },
+  text: {
+    ...commonStyles.text,
+    fontSize: 14,
+  },
+};
+
+const styles = StyleSheet.create(Platform.OS === 'web' ? webStyles : mobileStyles);
+
+export default styles;
