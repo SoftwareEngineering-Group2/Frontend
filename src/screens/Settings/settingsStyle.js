@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 24,
-    marginBottom: 20,
     color: '#007bff',
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.4)',
@@ -25,8 +24,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     borderRadius: 10,
-    borderWidth: 1, // Added border
-    borderColor: '#007bff', // Border color changed to blue
+    borderWidth: 1,
+    borderColor: '#007bff',
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     width: Platform.OS === 'web' ? 500 : '100%',
     marginBottom: 20,
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   input: {
   width: '100%',
@@ -65,13 +64,15 @@ inputContainer: {
 },
   inputRow: {
     flexDirection: 'row',
+    width: '70%',
     alignItems: 'center',
     backgroundColor: '#FFFFFF', // Match background color with the input field
     borderWidth: 1,
     borderColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    marginBottom: 20, // Space between this field and the next component
+    marginBottom: 20,
+    marginTop: 20, // Space between this field and the next component
   },
 inputField: {
   flex: 1,

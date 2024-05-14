@@ -87,7 +87,7 @@ const Home = () => {
   };
 
   const filteredDevices = devices.filter(device =>
-    device.name.toLowerCase().includes(searchQuery.toLowerCase())
+    mapDisplayName(device.name).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Function to handle the spoken text
@@ -131,7 +131,7 @@ const Home = () => {
                 style={[styles.image, { aspectRatio: 1 }]}
                 resizeMode='contain'
               />
-              <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{device.name}</Text>
+              <Text style={[styles.name, { fontWeight: 'bold', fontSize: 20 }]}>{mapDisplayName(device.name)}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={{ marginRight: 5, fontSize: 18 }}>Status:</Text>
                 {device.status ? (
@@ -215,6 +215,33 @@ const fetchDevices = async (setDevices: React.Dispatch<React.SetStateAction<Devi
   }
   } catch (error) {
     console.error('Error fetching devices:', error);
+  }
+};
+
+export const mapDisplayName = (deviceName: string) => {
+  switch (deviceName) {
+    case 'whiteLed':
+      return 'White Lamp';
+    case 'yellowLed':
+      return 'Yellow Lamp';
+    case 'door':
+      return 'Door';
+    case 'window':
+      return 'Window';
+    case 'buzzer':
+      return 'Buzzer';
+    case 'fan':
+      return 'Fan';
+    case 'gasSensor':
+      return 'Gas Sensor';
+    case 'microOven':
+      return 'Microwave Oven';
+    case 'coffeeMachine':
+      return 'Coffee Machine';
+    case 'mediaPlayer':
+      return 'Media Player';
+    default:
+      return deviceName; // Return the same name if no mapping is found
   }
 };
 
