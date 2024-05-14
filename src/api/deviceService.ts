@@ -65,7 +65,7 @@ export const getDeviceNames = async () => {
 
 export const getAllDevices = async (id : string) => {
   try {
-    const response = await httpClient.get(`/devices/testState/${id}`, {    
+    const response = await httpClient.get(`/devices/state`, {    
     });
     return response.data;
   } catch (error) {
@@ -147,6 +147,25 @@ export const setMediaPlayerStatus = async (
     throw error;
   }
 };
+
+export const skipMediaPlayer = async (
+) => {
+  try {
+    const stateResponse = await httpClient.post(`/mediaPlayer/skip`, {
+      newInformation: "skip"
+    });
+
+    return {
+      stateUpdateResponse: stateResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+
 
 const handleApiError = (error: any) => {
   if (error.response) {
