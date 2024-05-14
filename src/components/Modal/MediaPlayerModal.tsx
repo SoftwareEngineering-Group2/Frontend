@@ -91,13 +91,13 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
           />
           <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
             <TouchableOpacity onPress={handlePlay} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Ionicons name="play" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+              <Ionicons name="play" size={24} color={isEnabled ? "#fff" : "#aaa"} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleStop} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Ionicons name="stop" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+              <Ionicons name="stop" size={24} color={isEnabled ? "#fff" : "#aaa"} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleSkip} style={styles.mediaControlButton} disabled={!isEnabled}>
-              <Ionicons name="play-skip-forward" size={24} color={isEnabled ? "#007bff" : "#aaa"} />
+              <Ionicons name="play-skip-forward" size={24} color={isEnabled ? "#fff" : "#aaa"} />
             </TouchableOpacity>
           </View>
         </View>
