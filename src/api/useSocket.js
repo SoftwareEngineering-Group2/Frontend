@@ -18,7 +18,6 @@ export const useSocket = () => {
         });
 
         socket.on('all-devices', (devices) => {
-            console.log('Received all devices:', devices);
             setData((prevData) => {
                 if (JSON.stringify(prevData.allDevices) !== JSON.stringify(devices)) {
                     return { ...prevData, allDevices: devices, lastUpdated: 'allDevices' };
@@ -28,7 +27,6 @@ export const useSocket = () => {
         });
 
         socket.on('device-state-changed', (devices) => {
-            console.log('Device state changed:', devices);
             setData((prevData) => {
                 if (JSON.stringify(prevData.allDevices) !== JSON.stringify(devices)) {
                     return { ...prevData, allDevices: devices, lastUpdated: 'allDevices' };
@@ -42,7 +40,6 @@ export const useSocket = () => {
 
         });
         socket.on('sensor-channel', (message) => {
-            console.log(message);
             setData((prevData) => ({ ...prevData, message, lastUpdated: 'message' }));
             showToast(message);
           });
