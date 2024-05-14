@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.15)', // Adjusted alpha value for more transparency
   },
   modalView: {
+    minWidth: 300, // Minimum width
+    minHeight: 200,
     backgroundColor: '#fff',
     borderRadius: 10,
     alignItems: 'center',
