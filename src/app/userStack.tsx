@@ -1,26 +1,24 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from '../screens/Home/Home';
-import NavBar from '../components/Navigation/Navigation'
+import NavBar from '../components/Navigation/Navigation';
 import Settings from '../screens/Settings/settings';
-import profile from '../screens/Profile/profile';
-import { useSocket } from '../api/useSocket'
+import Profile from '../screens/Profile/profile';
+import { useSocket } from '../api/useSocket';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 
 export default function UserStack() {
-
-  const allDevices = useSocket();
-  console.log(allDevices.message)
+  const { allDevices, message } = useSocket();
+  console.log(message);
 
   return (
     <NavigationContainer independent={true}>
-      <Tab.Navigator tabBar={props => <NavBar {...props} />} >
-        {/* lägg pop up här */}
-        <Tab.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-        <Tab.Screen name="Profile" component={profile} options={{headerShown: false}}/>
-        <Tab.Screen name="Settings" component={Settings} options={{headerShown: false}}/>
+      <Tab.Navigator tabBar={props => <NavBar {...props} />}>
+        <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
