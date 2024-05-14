@@ -59,8 +59,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#007bff',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginHorizontal: 2,
+    marginBottom: 2,
   },
   feedbackContainer: {
     marginTop: 20,
