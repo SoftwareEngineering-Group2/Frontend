@@ -65,7 +65,7 @@ export const getDeviceNames = async () => {
 
 export const getAllDevices = async (id : string) => {
   try {
-    const response = await httpClient.get(`/devices/state`, {    
+    const response = await httpClient.get(`/devices/testState/${id}`, {    
     });
     return response.data;
   } catch (error) {
