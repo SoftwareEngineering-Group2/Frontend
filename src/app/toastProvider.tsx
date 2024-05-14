@@ -19,11 +19,10 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (message: string) => {
-    console.log("showToast called with message:", message);
     setToastMessage(message);
     setTimeout(() => {
       setToastMessage(null);
-    }, 5000); // Toast will disappear after 3 seconds
+    }, 10000); 
   };
 
   return (
