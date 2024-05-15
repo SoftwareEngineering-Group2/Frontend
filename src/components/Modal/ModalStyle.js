@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   slider: {
-    width: '80%',
+    width: 200,
     height: 40,
     marginBottom: 20,
     alignSelf: 'center',
