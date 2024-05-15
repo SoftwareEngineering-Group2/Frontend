@@ -1,4 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
+
+const isWeb = Platform.OS === 'web';
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -44,6 +46,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     alignItems: 'center',
+    ...Platform.select({
+      web: {
+        width: '48%',
+      }
+    }),
+    
   },
   imagePlaceholder: {
     width: 100,

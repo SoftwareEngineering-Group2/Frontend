@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, TouchableWithoutFeedback, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Dimensions, Image } from 'react-native';
 import { useAuthentication } from '../../hooks/useAuth';
 import { Platform } from 'react-native';
 import { getAllDevices, getDeviceImage, updateMicrowaveOven } from '../../api/deviceService';
@@ -73,12 +73,9 @@ const Home = () => {
   }, []);
 
 
-  const windowWidth = Dimensions.get('window').width;
-
-
+/*   const windowWidth = Dimensions.get('window').width;
   const numColumns = windowWidth > 600 ? 2 : 1;
-
-  const cardWidth = 1075 / numColumns;
+  const cardWidth = Platform.OS === 'web' ? 1075 / numColumns : '100%'; */
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -125,7 +122,7 @@ const Home = () => {
         />
         <View style={styles.cardsContainer}>
           {filteredDevices.map(device => (
-            <View key={device.id} style={[styles.card, { width: cardWidth }]}>
+            <View key={device.id} style={[styles.card, /* { width: cardWidth } */]}>
               <Image
                 source={{ uri: device.imageUrl }}
                 style={[styles.image, { aspectRatio: 1 }]}
