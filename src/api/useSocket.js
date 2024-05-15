@@ -10,7 +10,7 @@ export const useSocket = () => {
     const socketRef = useRef(null);
 
     useEffect(() => {
-        const socket = ioClient(SERVER_URL, { reconnection: false });
+        const socket = ioClient(SERVER_URL, { reconnection: true });
         socketRef.current = socket;
 
         socket.on('connect', () => {
