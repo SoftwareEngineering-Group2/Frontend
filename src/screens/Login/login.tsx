@@ -5,8 +5,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { Ionicons } from '@expo/vector-icons';
 import styles from './loginStyle'
-import {Alert} from '../../components/Alert/Alert'
-import {variants} from '../../components/Alert/variants'
 
 const Login = ({ navigation }: { navigation: NavigationProp<any, any> }) => {
   
@@ -131,11 +129,6 @@ return (
         New user? <Text style={styles.signUpLinkText}>Sign Up</Text>
       </Text>
     </TouchableOpacity>
-    {alert.show && (
-      <Alert 
-        variant={variants[alert.variants]} 
-      />
-    )}
   </View>
 );
 }
