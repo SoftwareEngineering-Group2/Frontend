@@ -73,11 +73,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#007bff'
+    backgroundColor: 'transparent'
   },
   feedbackText: {
-    color: '#FFFFFF', // White text for visibility
+    color: '#007bff', // White text for visibility
     fontSize: 16,
+    marginBottom: 10,
   },
   switch: {
     marginBottom: 10,
@@ -122,6 +123,17 @@ const styles = StyleSheet.create({
   },
   selectedWattButton: {
     backgroundColor: '#0056b3', // A darker blue to indicate selection
+  },
+  progressBarContainer: {
+    width: '100%',
+    height: 15,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#4c97ff',
   },
 });
 
