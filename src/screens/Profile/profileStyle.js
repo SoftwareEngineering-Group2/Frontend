@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: 'transparent',
-    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)'
+    backgroundImage: 'radial-gradient(#FCFCFC 30%, #CCE4FF 60%, #007bff)',
   },
   heading: {
     fontSize: 24,
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   },
   profileDetailText: {
     fontSize: 18, 
+    flex: 1,
   },
   profileImage: {
     width: 120,

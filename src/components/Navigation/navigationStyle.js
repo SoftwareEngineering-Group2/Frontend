@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: 'white',
     borderTopWidth: 1,
-    borderTopColor: 'lightgray',
+    borderTopColor: '#007bff',
   },
   menuItem: {
     flexDirection: 'column',

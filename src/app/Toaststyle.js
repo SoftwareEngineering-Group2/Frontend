@@ -3,7 +3,6 @@ import { StyleSheet, Platform } from "react-native";
 const commonStyles = {
   toast: {
     position: 'absolute',
-    transform: [{ translateX: -100 }], // Adjust to center horizontally
     borderRadius: 5,
     zIndex: 1000,
     justifyContent: 'center',
@@ -37,7 +36,7 @@ const mobileStyles = {
     ...commonStyles.toast,
     padding: 5,
     top: '20%',
-    left: '57%',
+    left: '30%',
     width: 150, 
     height: 70,
   },
