@@ -74,6 +74,38 @@ export const getAllDevices = async (id : string) => {
   }
 };
 
+export const setOvenMode = async (ovenMode: string) => {
+  try {
+    const ovenModeResponse = await httpClient.post(`/device/microOven/ovenMode`, {
+      newInformation: ovenMode
+    });
+
+    return {
+      ovenModeUpdateResponse: ovenModeResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+export const updateMicrowaveTimer = async (time: number) => {
+  try {
+    const timerResponse = await httpClient.post(`/device/microOven/ovenTimer`, {
+      newInformation: time
+    });
+
+    return {
+      timerUpdateResponse: timerResponse.data,
+    };
+
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
 export const setCoffeeMachineType = async (
   coffeeType: string
 ) => {
@@ -101,17 +133,17 @@ export const updateMicrowaveOven = async (
   try {
     const deviceStateString = String(deviceState);
 
-    // Update the microwaveoven state
+    // Update the microwave oven state
     const stateResponse = await httpClient.post(`/device/microOven/deviceState`, {
       newInformation: deviceStateString
     });
 
-    // Update the ovenMode e.g. Defrost, 700w, 1000w
+    // Update the oven mode e.g. Defrost, 700w, 1000w
     const modeResponse = await httpClient.post(`/device/microOven/ovenMode`, {
       newInformation: ovenMode
     });
 
-    // Update the timer e.g 1, 2, 3
+    // Update the timer e.g. 1, 2, 3
     const timerResponse = await httpClient.post(`/device/microOven/ovenTimer`, {
       newInformation: ovenTimer
     });
@@ -121,7 +153,6 @@ export const updateMicrowaveOven = async (
       ovenModeUpdateResponse: modeResponse.data,
       ovenTimerUpdateResponse: timerResponse.data,
     };
-
   } catch (error) {
     handleApiError(error);
     throw error;
