@@ -60,7 +60,6 @@ const MicrowaveModalComponent: React.FC<ModalProps> = ({
     console.log("Timer completed");
     setIsPlaying(false); // Ensure timer stops after completion
     setRemainingTime(0); // Reset remaining time
-    updateMicrowaveTimer(0); // Update the timer status in the database
   };
 
   const handleStartStopTimer = async () => {
@@ -89,11 +88,6 @@ const MicrowaveModalComponent: React.FC<ModalProps> = ({
 
   const updateRemainingTime = async (time: number) => {
     setRemainingTime(time);
-    try {
-      await updateMicrowaveTimer(time);
-    } catch (error) {
-      console.error("Error updating microwave timer:", error);
-    }
   };
 
   return (
