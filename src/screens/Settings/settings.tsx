@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./settingsStyle";
 import { Ionicons } from "@expo/vector-icons";
-
 import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import {
   getAuth,
   EmailAuthProvider,
-  User,
   reauthenticateWithCredential,
-  updateEmail,
   updatePassword,
-} from "firebase/auth"; // Ensure correct imports
-import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+} from "firebase/auth";
 
 const Settings = () => {
-  const [newEmail, setNewEmail] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [newPasswordVisible, setNewPasswordVisible] = useState<boolean>(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] =
     useState<boolean>(false);
   const [currentPassword, setCurrentPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentEmail, setCurrentEmail] = useState<string>("");
+
+  useEffect(() => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user && user.email) {
+      setCurrentEmail(user.email);
+    }
+  }, []);
 
   const toggleNewPasswordVisibility = () => {
     setNewPasswordVisible(!newPasswordVisible);
@@ -38,7 +44,6 @@ const Settings = () => {
   };
 
   const handleNewPasswordChange = (text: string) => {
-    console.log("Updating new password:", text); // This should log every keystroke
     setNewPassword(text);
   };
 
@@ -52,55 +57,40 @@ const Settings = () => {
         currentPassword
       );
       try {
+        console.log("Reauthenticating with email:", user.email);
         await reauthenticateWithCredential(user, credential);
+        console.log("Reauthentication successful");
         return true;
       } catch (error) {
         console.error("Error reauthenticating:", error);
-        Alert.alert("Error", "Current password is incorrect.");
+        Alert.alert("Error", "Current password is incorrect or invalid.");
         return false;
       }
+    } else {
+      console.log("User is not authenticated");
+      return false;
     }
-    return false;
   };
 
   const handleUpdatePassword = async () => {
-    // Check if the new passwords match before attempting to reauthenticate and update
     if (newPassword !== confirmPassword) {
       Alert.alert("Error", "The new passwords do not match.");
       return;
     }
 
     if (await reauthenticate(currentPassword)) {
-      const auth = getAuth(); // Get the auth instance
-      const user = auth.currentUser; // Get the current user
-
-      if (user) {
-        try {
-          await updatePassword(user, newPassword); // Use the updatePassword function
-          Alert.alert("Success", "Password updated successfully!");
-          setNewPassword(""); // Clear the new password field
-          setConfirmPassword(""); // Clear the confirm password field
-        } catch (error) {
-          console.error("Error updating password:", error);
-          Alert.alert("Error", "Failed to update password.");
-        }
-      }
-    }
-  };
-
-  const handleUpdateEmail = async () => {
-    if (await reauthenticate(currentPassword)) {
-      const auth = getAuth(); // Assuming you're using the initialized auth object
+      const auth = getAuth();
       const user = auth.currentUser;
 
       if (user) {
         try {
-          await updateEmail(user, newEmail); // Correct method to update email
-          Alert.alert("Success", "Email updated successfully!");
-          setNewEmail(""); // Clear the input field
+          await updatePassword(user, newPassword);
+          Alert.alert("Success", "Password updated successfully!");
+          setNewPassword("");
+          setConfirmPassword("");
         } catch (error) {
-          console.error("Error updating email:", error);
-          Alert.alert("Error", "Failed to update email.");
+          console.error("Error updating password:", error);
+          Alert.alert("Error", "Failed to update password.");
         }
       }
     }
@@ -114,16 +104,28 @@ const Settings = () => {
         <View style={styles.inputRow}>
           <Ionicons name="mail" size={24} color="#007bff" style={styles.icon} />
           <TextInput
-            style={styles.inputField}
-            onChangeText={setNewEmail}
-            value={newEmail}
-            placeholder="Enter new email"
-            autoCapitalize="none"
+            style={[styles.inputField, { color: "gray" }]}
+            value={currentEmail}
+            placeholder="Current email"
+            editable={false}
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleUpdateEmail}>
-          <Text style={styles.buttonText}>Update Email</Text>
-        </TouchableOpacity>
+
+        <View style={styles.inputRow}>
+          <Ionicons
+            name="lock-closed"
+            size={24}
+            color="#007bff"
+            style={styles.icon}
+          />
+          <TextInput
+            style={styles.inputField}
+            onChangeText={setCurrentPassword}
+            value={currentPassword}
+            placeholder="Enter current password"
+            secureTextEntry={true}
+          />
+        </View>
 
         <View style={styles.inputRow}>
           <Ionicons
@@ -176,6 +178,7 @@ const Settings = () => {
             />
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity style={styles.button} onPress={handleUpdatePassword}>
           <Text style={styles.buttonText}>Update Password</Text>
         </TouchableOpacity>
