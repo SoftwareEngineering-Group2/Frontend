@@ -26,9 +26,6 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
       // Toggle the local state
       setIsEnabled(previousState => !previousState);
 
-      // Call API to update device state
-      const newState = { state: !isEnabled }; // Toggle the state correctly
-      await updateDeviceState(deviceInfo?.name, newState);
       //callback
     } catch (error) {
       console.error('Error updating device state:', error);
@@ -40,6 +37,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     try {
       await setMediaPlayerStatus("play");
       console.log('Play action sent');
+      await updateDeviceState(deviceInfo?.name, {state : true});
     } catch (error) {
       console.error('Error sending Play action:', error);
     }
@@ -58,6 +56,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     try {
       await setMediaPlayerStatus("stop");
       console.log('Stop action sent');
+      await updateDeviceState(deviceInfo?.name, {state : false});
     } catch (error) {
       console.error('Error sending Stop action:', error);
     }

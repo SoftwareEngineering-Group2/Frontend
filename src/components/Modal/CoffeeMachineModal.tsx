@@ -31,7 +31,7 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
       interval = setInterval(() => {
         setTimer(prevTimer => {
           const newTimer = prevTimer - 1;
-          setProgress((newTimer / 5) * 100); // Update progress
+          setProgress((newTimer / 10) * 100); // Update progress
           return newTimer;
         });
       }, 1000);
@@ -50,10 +50,10 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     try {
       // Toggle the local state
       setIsEnabled(previousState => !previousState);
-
+     // const newState = { state: !isEnabled }; 
       // Call API to update device state
-      const newState = { state: !isEnabled }; // Toggle the state correctly
-      await updateDeviceState(deviceInfo?.name, newState);
+      // Toggle the state correctly
+      //await updateDeviceState(deviceInfo?.name, newState);
       //callback
     } catch (error) {
       console.error('Error updating device state:', error);
@@ -61,13 +61,17 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
     }
   };
 
+  
+
   const startMakingCoffee = async (type: string) => {
     console.log(`Making ${type}`);
+
+    await updateDeviceState(deviceInfo?.name, { state: true } );
+    await setCoffeeMachineType(type);
     setIsMakingCoffee(true);
     setCoffeeTypeBeingMade(type);
-    setTimer(5); // Set timer to 5 seconds
+    setTimer(10); // Set timer to 5 seconds
     setProgress(100); // Reset progress
-    await setCoffeeMachineType(type);
   };
 
   return (
