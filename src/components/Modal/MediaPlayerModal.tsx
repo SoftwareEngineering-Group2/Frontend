@@ -19,6 +19,8 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
   useEffect(() => {
     // Update the switch state based on device status
     setIsEnabled(deviceInfo?.status);
+
+
   }, [deviceInfo]);
 
   const toggleSwitch = async () => {
@@ -26,11 +28,15 @@ const ModalComponent: React.FC<ModalProps> = ({ modalVisible, toggleModal, devic
       // Toggle the local state
       setIsEnabled(previousState => !previousState);
 
-      //callback
+      if (isEnabled) {
+        console.log("hallo")
+        handleStop();
+      }
     } catch (error) {
       console.error('Error updating device state:', error);
       // Handle error states here
     }
+    
   };
 
   const handlePlay = async () => {
