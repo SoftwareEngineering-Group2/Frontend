@@ -49,8 +49,8 @@ const MicrowaveModalComponent: React.FC<ModalProps> = ({
       setIsEnabled((previousState) => !previousState);
 
       // Call API to update device state
-      const newState = { state: !isEnabled }; // Toggle the state correctly
-      await updateDeviceState(deviceInfo?.name, newState);
+   //   const newState = { state: !isEnabled }; // Toggle the state correctly
+    //  await updateDeviceState(deviceInfo?.name, newState);
     } catch (error) {
       console.error("Error updating device state:", error);
     }
@@ -68,6 +68,9 @@ const MicrowaveModalComponent: React.FC<ModalProps> = ({
     } else {
       setKey((prevKey) => prevKey + 1);
       setIsPlaying(true);
+     
+      const newState = { state: !isEnabled }; // Toggle the state correctly
+      await updateDeviceState(deviceInfo?.name, newState);
       await updateMicrowaveOven(
         isEnabled ?? false,
         selectedWatt,
